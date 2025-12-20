@@ -5,17 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug with Atmel-ICE",
+            "name": "OpenOCD AVR Debug with Atmel-ICE",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/arduino.avr.promicro/${fileBasename}.elf",
+            "program": "${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf",
+            // "program": "${workspaceFolder}/build/arduino.avr.promicro/${fileBasename}.elf",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            // or "miDebuggerPath": "${env:ARDUINO_TOOLS}\\avr-gcc\\7.3.0-atmel3.6.1-arduino5\\bin\\avr-gdb.exe",
-            "miDebuggerPath": "${env:ARDUINO_TOOLS}\\avr-gcc\\7.3.0-atmel3.6.1-arduino5\\bin\\avr-gdb.exe",
+            // "miDebuggerPath": "${env:ARDUINO_TOOLS}\\avr-gcc\\7.3.0-atmel3.6.1-arduino5\\bin\\avr-gdb.exe",
+            // IFF avr-gdb path is in SYSTEM PATH
+            "miDebuggerPath": "avr-gdb.exe",
             "miDebuggerServerAddress": "localhost:4242", // Default port for OpenOCD GDB server
             // "targetArchitecture": "arm",
             "MIMode": "gdb",
@@ -37,6 +39,34 @@
                 }
             ]
             //"preLaunchTask": "build_project" // Optional: runs the build task before debugging
+        }
+    ],
+    "inputs": [
+        {
+            // list of FQBN for the boards I have and are installed in arduino-cli
+            "type": "pickString",
+            "id": "FQBNDIR",
+            "description": "Fully Qualified Board Name (FQBN)build directory to use",
+            "options": [
+                "arduino.avr.mega",
+                "arduino.avr.micro",
+                "arduino.avr.promicro",
+                "arduino.avr.uno",
+                "esp32.esp32.esp32thing",
+                "esp8266.esp8266.thingdev",
+                "SparkFun.avr.promicro",
+            ]
+        },
+        {
+            // dynamic com port list from google search: vs code tasks.json input com ports extension "Command Variable"
+            "id": "COMPort",
+            "type": "command",
+            "command": "shellCommand.execute",
+            "args": {
+                // alternative windows only command: "powershell -Command \"[System.IO.Ports.SerialPort]::GetPortNames()\""
+                "command": "python ${workspaceFolder}/list_ports.py",
+                "description": "Select the COM port for upload"
+            }
         }
     ]
 }
