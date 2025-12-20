@@ -1,16 +1,49 @@
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        // all arduino-cli tasks require arduino-cli path in User and/or System PATH
         // arduino-cli compile -v --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "arduino-cli compile only",
+            "label": "arduino-cli production compile only",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
                 "compile",
                 "-v",
+                "--clean",
                 "--fqbn",
-                "arduino:avr:promicro",
+                "${input:FQBN}",
+                "${workspaceFolder}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        // arduino-cli compile --clean --fqbn arduino:avr:promicro --build-property compiler.c.extra_flags=-Og --build-property compiler.cpp.extra_flags=-Og "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
+        {
+            "label": "arduino-cli debug compile only",
+            "type": "shell",
+            "command": "arduino-cli",
+            "args": [
+                "compile",
+                "--clean",
+                "-v",
+                "--fqbn",
+                "${input:FQBN}",
+                "--build-property",
+                "compiler.c.extra_flags=-g3 -Og",
+                "--build-property",
+                "compiler.cpp.extra_flags=-g3 -Og",
                 "${workspaceFolder}"
             ],
             "group": {
@@ -27,15 +60,16 @@
         },
         // arduino-cli upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "arduino-cli upload only",
+            "label": "arduino-cli COM Port upload",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
                 "upload",
                 "-v",
-                "-p", "COM26",
+                "-p",
+                "${input:COMPort}",
                 "--fqbn",
-                "arduino:avr:promicro",
+                "${input:FQBN}",
                 "${workspaceFolder}"
             ],
             "group": {
@@ -52,16 +86,17 @@
         },
         // arduino-cli compile --upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "arduino-cli compile & upload",
+            "label": "arduino-cli production compile & COM port upload",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
                 "compile",
                 "--upload",
                 "-v",
-                "-p", "COM26",
+                "-p",
+                "${input:COMPort}",
                 "--fqbn",
-                "arduino:avr:promicro",
+                "${input:FQBN}",
                 "${workspaceFolder}"
             ],
             "group": {
@@ -75,6 +110,94 @@
                 "panel": "shared"
             },
             "problemMatcher": []
+        },
+        // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
+        {
+            "label": "avrdude atmel-ice upload",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-v",
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-P", "usb",
+                "-U","flash:w:${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.hex:i"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        // list of avr mcu's for the boards I have installed
+        {
+            "type": "pickString",
+            "id": "MCU",
+            "description": "AVR mcu for upload",
+            "options": [
+                "atmega32u4",       // Leonardo, Micro, Pro Micro
+                "atmega328p",       // Uno
+                "atmega2560"        // Mega 2560
+            ]
+        },
+        // list of atmel ice connection targets
+        {
+            "type": "pickString",
+            "id": "TARGET",
+            "description": "Atmel-ICE target for upload",
+            "options": [
+                "atmelice_isp",   // 6 pin ISP
+                "atmelice"        // 10 pin JTAG
+            ]
+        },
+        {
+            // list of FQBN for the boards I have and are installed in arduino-cli
+            "type": "pickString",
+            "id": "FQBN",
+            "description": "Fully Qualified Board Name (FQBN) to use",
+            "options": [
+                "arduino:avr:mega",
+                "arduino:avr:micro",
+                "arduino:avr:promicro",
+                "arduino:avr:uno",
+                // "esp32:esp32:esp32thing",
+                // "esp8266:esp8266:thingdev",
+                "SparkFun:avr:promicro",
+            ]
+        },
+        {
+            // list of build dirs for the FQBN of boards I have and are installed in arduino-cli
+            "type": "pickString",
+            "id": "FQBNDIR",
+            "description": "Fully Qualified Board Name (FQBN) build directory to use",
+            "options": [
+                "arduino.avr.mega",
+                "arduino.avr.micro",
+                "arduino.avr.promicro",
+                "arduino.avr.uno",
+                // "esp32.esp32.esp32thing",
+                // "esp8266.esp8266.thingdev",
+                "SparkFun.avr.promicro",
+            ]
+        },
+        {
+            // dynamic com port list from google search: vs code tasks.json input com ports extension "Command Variable"
+            "id": "COMPort",
+            "type": "command",
+            "command": "shellCommand.execute",
+            "args": {
+                // alternative windows only command: "powershell -Command \"[System.IO.Ports.SerialPort]::GetPortNames()\""
+                "command": "python ${workspaceFolder}/list_ports.py",
+                "description": "Select the COM port for upload"
+            }
         }
     ]
 }
