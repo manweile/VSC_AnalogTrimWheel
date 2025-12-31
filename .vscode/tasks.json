@@ -3,6 +3,28 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        // openocd -f interface/cmsis-dap.cfg -c "set CHIPNAME atmega32u4" -c "source [find target/atmega32u4.cfg]" -c "init" -c "reset halt"
+        {
+            "label": "Start OpenOCD",
+            "type": "process",
+            "command": "openocd",
+            "args": [
+                "-c", "source [find interface/cmsis-dap.cfg]",
+                "-c", "set CHIPNAME ${input:MCU}",
+                "-c", "source [find target/${input:MCU}.cfg]",
+                "-c", "init",
+                "-c", "reset halt"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "isBackground": true,
+            "problemMatcher": "$go",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
         // all arduino-cli tasks require arduino-cli path in User and/or System PATH
         // arduino-cli compile -v --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
@@ -111,9 +133,33 @@
             },
             "problemMatcher": []
         },
+        // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf:e
+        {
+            "label": "avrdude atmel-ice elf upload",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-v",
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-P", "usb",
+                "-U","flash:w:${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf:e"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
         // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
         {
-            "label": "avrdude atmel-ice upload",
+            "label": "avrdude atmel-ice hex upload",
             "type": "shell",
             "command": "avrdude",
             "args": [
