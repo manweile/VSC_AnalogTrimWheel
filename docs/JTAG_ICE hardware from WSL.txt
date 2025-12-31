@@ -1,0 +1,225 @@
+Ensure your JTAG/ICE hardware is accessible within the WSL environment
+
+#########################################################################################################
+open an admin powershell terminal
+
+#########################################################################################################
+Install usbipd-win:
+PS C:\Users\gmanw> winget.exe install --interactive --exact dorssel.usbipd-win
+Found an existing package already installed. Trying to upgrade the installed package...
+Found usbipd-win [dorssel.usbipd-win] Version 5.3.0
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://github.com/dorssel/usbipd-win/releases/download/v5.3.0/usbipd-win_5.3.0_x64.msi
+  ██████████████████████████████  4.29 MB / 4.29 MB
+Successfully verified installer hash
+Starting package install...
+Successfully installed
+
+#########################################################################################################
+List available devices:
+Before connecting arduino micro:
+PS C:\Users\gmanw> usbipd list
+Connected:
+BUSID  VID:PID    DEVICE                                                        STATE
+1-1    044f:b687  USB Input Device                                              Not shared
+1-2    231d:0200  USB Input Device                                              Not shared
+1-9    044f:b679  USB Input Device                                              Not shared
+1-10   6655:4101  USB Input Device                                              Not shared
+1-12   03eb:2141  USB Input Device, Atmel-ICE Data Gateway                      Not shared
+1-19   1058:259f  USB Mass Storage Device                                       Not shared
+3-2    2341:0043  Arduino Uno (COM11)                                           Not shared
+3-3    07ca:313a  Live Streamer CAM 313, Live Streamer CAM313 Microphone        Not shared
+
+Persisted:
+GUID                                  DEVICE
+869c6a39-3c90-472e-95d9-bf2ae29e455b  USB Attached SCSI (UAS) Mass Storage Device
+
+usbipd: warning: USB filter 'USBPcap' is known to be incompatible with this software; 'bind --force' will be required.
+
+#########################################################################################################
+After connecting arduino micro:
+PS C:\Users\gmanw> usbipd list
+Connected:
+BUSID  VID:PID    DEVICE                                                        STATE
+1-1    044f:b687  USB Input Device                                              Not shared
+1-2    231d:0200  USB Input Device                                              Not shared
+1-8    2341:8037  Arduino Micro (COM24), USB Input Device                       Not shared
+1-9    044f:b679  USB Input Device                                              Not shared
+1-10   6655:4101  USB Input Device                                              Not shared
+1-12   03eb:2141  USB Input Device, Atmel-ICE Data Gateway                      Not shared
+1-19   1058:259f  USB Mass Storage Device                                       Not shared
+3-2    2341:0043  Arduino Uno (COM11)                                           Not shared
+3-3    07ca:313a  Live Streamer CAM 313, Live Streamer CAM313 Microphone        Not shared
+
+Persisted:
+GUID                                  DEVICE
+869c6a39-3c90-472e-95d9-bf2ae29e455b  USB Attached SCSI (UAS) Mass Storage Device
+
+usbipd: warning: USB filter 'USBPcap' is known to be incompatible with this software; 'bind --force' will be required.
+
+#########################################################################################################
+Binding atmel-ice:
+PS C:\Users\gmanw> usbipd bind --busid 1-12
+usbipd: warning: USB filter 'USBPcap' is known to be incompatible with this software; 'bind --force' will be required.
+
+#########################################################################################################
+Attaching atmel-ice:
+PS C:\Users\gmanw> usbipd attach --wsl --busid 1-12
+usbipd: info: Using WSL distribution 'Ubuntu' to attach; the device will be available in all WSL 2 distributions.
+usbipd: info: Loading vhci_hcd module.
+usbipd: info: Detected networking mode 'nat'.
+usbipd: info: Using IP address 172.18.32.1 to reach the host.
+
+#########################################################################################################
+After attaching atmel-ice:
+PS C:\Users\gmanw> usbipd list
+Connected:
+BUSID  VID:PID    DEVICE                                                        STATE
+1-1    044f:b687  USB Input Device                                              Not shared
+1-2    231d:0200  USB Input Device                                              Not shared
+1-8    2341:8037  Arduino Micro (COM24), USB Input Device                       Not shared
+1-9    044f:b679  USB Input Device                                              Not shared
+1-10   6655:4101  USB Input Device                                              Not shared
+1-12   03eb:2141  USB Input Device, Atmel-ICE Data Gateway                      Attached
+1-19   1058:259f  USB Mass Storage Device                                       Not shared
+3-2    2341:0043  Arduino Uno (COM11)                                           Not shared
+3-3    07ca:313a  Live Streamer CAM 313, Live Streamer CAM313 Microphone        Not shared
+
+Persisted:
+GUID                                  DEVICE
+869c6a39-3c90-472e-95d9-bf2ae29e455b  USB Attached SCSI (UAS) Mass Storage Device
+
+#########################################################################################################
+Verify device is listed in WSL terminal:
+gerald@MSI-DESKTOP:~$ lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 03eb:2141 Atmel Corp. ICE debugger
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+
+#########################################################################################################
+Install necessary Linux tools in WSL terminal:
+gerald@MSI-DESKTOP:~$ sudo apt install linux-tools-generic hwdata
+
+#########################################################################################################
+Create udev rule in WSL terminal:
+
+gerald@MSI-DESKTOP:~$ sudo vim /etc/udev/rules.d/99-avr-jtag.rules
+# Atmel-ICE (EDBG)
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2141", MODE="0666", GROUP="plugdev"
+
+# AVR Dragon
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2107", MODE="0666", GROUP="plugdev"
+
+# JTAGICE mkII
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", MODE="0666", GROUP="plugdev"
+
+# JTAGICE 3
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2140", MODE="0666", GROUP="plugdev"
+
+save and exit
+
+apply rules in WSL terminal:
+gerald@MSI-DESKTOP:~$ sudo udevadm control --reload-rules && sudo udevadm trigger
+gerald@MSI-DESKTOP:~$ sudo usermod -aG plugdev $USER
+
+verify rules WSL terminal:
+gerald@MSI-DESKTOP:~$ lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 03eb:2141 Atmel Corp. ICE debugger
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+gerald@MSI-DESKTOP:~$ ls -l /dev/bus/usb/001/002
+crw-rw-rw- 1 root plugdev 189, 1 Dec 30 15:34 /dev/bus/usb/001/002
+
+#########################################################################################################
+Run AVaRICE in WSL Terminal:
+gerald@MSI-DESKTOP:~$ avarice --edbg --jtag usb :4242
+AVaRICE version 2.14svn20200906, Mar 28 2022 12:30:47
+
+Defaulting JTAG bitrate to 250 kHz.
+
+JTAG config starting.
+Found a device, serial number: J41800082278
+Reported device ID: 0x9587
+Configured for device ID: 0x9587 atmega32u4
+JTAG config complete.
+Preparing the target device for On Chip Debugging.
+Waiting for connection on port 4242.
+
+#########################################################################################################
+Run avr-gdb in Admin Powershell:
+PS D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro> avr-gdb.exe .\VSC_AnalogTrimWheel.ino.elf
+GNU gdb (GDB) 7.8
+Copyright (C) 2014 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-w64-mingw32 --target=avr".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from .\VSC_AnalogTrimWheel.ino.elf...done.
+(gdb) target remote localhost:4242
+Remote debugging using localhost:4242
+0x00007000 in ?? ()
+(gdb)
+
+AVaRICE in WSL Terminal output:
+Connection opened by host 127.0.0.1, port 60094.
+
+#########################################################################################################
+
+You can now debug in VS Code
+NB Setting/unsetting the OCDEN and JTAGEN fuses is NOT required!
+Launch avarice is a WSL terminal:
+single use: gerald@MSI-DESKTOP:~$ avarice --edbg --jtag usb :4242
+continuous: gerald@MSI-DESKTOP:~$ while true; do avarice --edbg --jtag usb :4243; sleep 1; done
+
+Use launch task in VS Code
+
+#########################################################################################################
+
+To reverse Atmel-Ice setup:
+
+Verify device is listed in WSL terminal:
+gerald@MSI-DESKTOP:~$ lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 03eb:2141 Atmel Corp. ICE debugger
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+
+list devices in Admin Powershell terminal:
+PS C:\Users\gmanw> usbipd list
+Connected:
+BUSID  VID:PID    DEVICE                                                        STATE
+1-1    044f:b687  USB Input Device                                              Not shared
+1-2    231d:0200  USB Input Device                                              Not shared
+1-8    0000:0002  Unknown USB Device (Device Descriptor Request Failed)         Not shared
+1-9    044f:b679  USB Input Device                                              Not shared
+1-10   6655:4101  USB Input Device                                              Not shared
+1-12   03eb:2141  USB Input Device, Atmel-ICE Data Gateway                      Attached
+1-19   1058:259f  USB Mass Storage Device                                       Not shared
+3-2    2341:0043  Arduino Uno (COM11)                                           Not shared
+3-3    07ca:313a  Live Streamer CAM 313, Live Streamer CAM313 Microphone        Not shared
+
+Persisted:
+GUID                                  DEVICE
+869c6a39-3c90-472e-95d9-bf2ae29e455b  USB Attached SCSI (UAS) Mass Storage Device
+
+usbipd: warning: USB filter 'USBPcap' is known to be incompatible with this software; 'bind --force' will be required.
+
+detach by hardware-id in Admin Powershell terminal:
+PS C:\Users\gmanw> usbipd detach -i 03eb:2141
+
+unbind by bus-id in Admin Powershell terminal:
+usbipd: info: Device with hardware-id '03eb:2141' found at busid '1-12'.
+PS C:\Users\gmanw> usbipd unbind --busid 1-12
+
+Confirm device not listed in WSL terminal:
+gerald@MSI-DESKTOP:~$ lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
