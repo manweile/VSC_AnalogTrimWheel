@@ -1,0 +1,102 @@
+WSL Avarice install
+
+############################################################################################################################
+open a WSL terminal
+############################################################################################################################
+Update and upgrade WSL:
+gerald@MSI-DESKTOP:~$ sudo apt update && sudo apt upgrade -y
+[sudo] password for gerald:
+Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Hit:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+...
+Get:45 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 c-n-f Metadata [384 B]
+Fetched 13.6 MB in 4s (3207 kB/s)
+
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+
+109 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Calculating upgrade... Done
+
+The following packages were automatically installed and are no longer required:
+  libdrm-nouveau2 libdrm-radeon1 libgl1-amber-dri libglapi-mesa libllvm19 libxcb-dri2-0
+Use 'sudo apt autoremove' to remove them.
+
+The following NEW packages will be installed:
+  libllvm20
+  
+The following packages have been kept back:
+  libgl1-amber-dri
+  
+The following packages will be upgraded:
+  apparmor apt apt-utils base-files binutils binutils-common binutils-x86-64-linux-gnu bsdextrautils bsdutils cloud-init coreutils dconf-gsettings-backend 
+  ...
+  ubuntu-pro-client-l10n ubuntu-release-upgrader-core udev update-manager-core util-linux uuid-runtime wsl-pro-service wsl-setup
+
+108 upgraded, 1 newly installed, 0 to remove and 1 not upgraded.
+23 standard LTS security updates
+Need to get 137 MB of archives.
+After this operation, 163 MB of additional disk space will be used.
+
+Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 motd-news-config all 13ubuntu10.3 [4016 B]
+...
+Get:109 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 wsl-setup amd64 0.5.10~24.04 [20.4 kB]
+Fetched 137 MB in 12s (11.6 MB/s)
+
+Extracting templates from packages: 100%
+
+Preconfiguring packages ...
+Reading database ...
+Preparing to unpack ...
+Unpacking ...
+Setting up ...
+Installing ...
+Removing ...
+Processing triggers ...
+
+############################################################################################################################
+install avarice:
+gerald@MSI-DESKTOP:~$ sudo apt install avarice
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+
+The following packages were automatically installed and are no longer required:
+  libdrm-nouveau2 libdrm-radeon1 libgl1-amber-dri libglapi-mesa libllvm19 libxcb-dri2-0
+Use 'sudo apt autoremove' to remove them.
+
+The following additional packages will be installed:
+  gdb-avr libhidapi-libusb0 libusb-0.1-4
+
+Suggested packages:
+  gdb-doc
+
+The following NEW packages will be installed:
+  avarice gdb-avr libhidapi-libusb0 libusb-0.1-4
+
+0 upgraded, 4 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3690 kB of archives.
+After this operation, 11.6 MB of additional disk space will be used.
+Do you want to continue? [Y/n] Y
+
+Get:1 http://archive.ubuntu.com/ubuntu noble/universe amd64 libhidapi-libusb0 amd64 0.14.0-1build1 [17.6 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libusb-0.1-4 amd64 2:0.1.12-35build1 [17.2 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble/universe amd64 avarice amd64 2.14+svn427-1 [104 kB]
+Get:4 http://archive.ubuntu.com/ubuntu noble/universe amd64 gdb-avr amd64 13.2-3ubuntu3 [3551 kB]
+Fetched 3690 kB in 2s (2438 kB/s)
+
+Selecting previously unselected package libhidapi-libusb0:amd64.
+
+(Reading database ... 
+Preparing to unpack ...
+Unpacking ...
+Setting up ...
+Processing triggers ...
+
+############################################################################################################################
