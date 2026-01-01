@@ -5,7 +5,7 @@
     "tasks": [
         // openocd -f interface/cmsis-dap.cfg -c "set CHIPNAME atmega32u4" -c "source [find target/atmega32u4.cfg]" -c "init" -c "reset halt"
         {
-            "label": "Start OpenOCD",
+            "label": "Start Win OpenOCD Server",
             "type": "process",
             "command": "openocd",
             "args": [
@@ -19,11 +19,35 @@
                 "cwd": "${workspaceFolder}"
             },
             "isBackground": true,
-            "problemMatcher": "$go",
+            "problemMatcher": [],
+            "presentation": {
+                "panel": "new",
+                "reveal": "always"
+            },
+        },
+        // in WSL Ubuntu terminal: gerald@MSI-DESKTOP:~$ avarice --edbg --jtag usb :4242
+        {
+            "label": "Start Avarice in WSL Ubuntu",
+            "type": "shell",
+            "command": "wsl.exe",
+            "args": [
+                "ubuntu",
+                "-c",
+                // Replace "avarice [options]" with your specific avarice command
+                "avarice", "--edbg", "--jtag usb :4242"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
             "group": {
-                "kind": "build",
+                "kind": "test",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": []
         },
         // all arduino-cli tasks require arduino-cli path in User and/or System PATH
         // arduino-cli compile -v --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"

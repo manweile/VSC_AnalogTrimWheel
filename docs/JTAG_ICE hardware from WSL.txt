@@ -132,6 +132,29 @@ gerald@MSI-DESKTOP:~$ ls -l /dev/bus/usb/001/002
 crw-rw-rw- 1 root plugdev 189, 1 Dec 30 15:34 /dev/bus/usb/001/002
 
 #########################################################################################################
+
+Set mcu fuses:
+Note: you can use avrdude/AVRDUDESS while you have the Atmel-Ice setup with usbipd.
+You CANNOT with Microchip studio.
+
+With AVRDUDESS:
+open bit fuses; select OCDEN and JTAGEN to 0, HFUSE should now have 0x18, click write fuses.
+To reverse, select OCDEN and JTAGEN to 1, HFUSE should now have 0xD8, click write fuses.
+
+With avrdude cli:
+avrdude.exe -c atmelice_isp -p m32u4 -F -v -v -U lfuse:w:0xFF:m -U hfuse:w:0x18:m -U efuse:w:0xFB:m
+to reverse: avrdude.exe -c atmelice_isp -p m32u4 -F -v -v -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xFB:m
+
+With Microchip Studio Device Programming Dialog:
+First you have to detach and unbind the Atmel-Ice with usbipd
+Open device programming dialog
+Tool: Atmel-Ice, Device: ATmega32u4 (for example), Interface: JTAG or ISP (depends on which you have hooked up and/or prefer). 
+click device signature read, click target voltage read.
+Select HIGH.OCDEN, select HIGH.JTAGEN, click Program.
+To reverse, unselect HIGH.OCDEN, select HIGH.JTAGEN, click Program.
+
+#########################################################################################################
+
 Run AVaRICE in WSL Terminal:
 gerald@MSI-DESKTOP:~$ avarice --edbg --jtag usb :4242
 AVaRICE version 2.14svn20200906, Mar 28 2022 12:30:47
@@ -147,7 +170,8 @@ Preparing the target device for On Chip Debugging.
 Waiting for connection on port 4242.
 
 #########################################################################################################
-Run avr-gdb in Admin Powershell:
+
+verify avr-gdb in Admin Powershell:
 PS D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro> avr-gdb.exe .\VSC_AnalogTrimWheel.ino.elf
 GNU gdb (GDB) 7.8
 Copyright (C) 2014 Free Software Foundation, Inc.
@@ -171,6 +195,10 @@ Remote debugging using localhost:4242
 
 AVaRICE in WSL Terminal output:
 Connection opened by host 127.0.0.1, port 60094.
+
+avr-gdb in Admin Powershell:
+(gdb) quit
+This will also terminate avarice, so you have to restart it in the WSL terminal.
 
 #########################################################################################################
 
