@@ -29,12 +29,10 @@
         {
             "label": "Start Avarice in WSL Ubuntu",
             "type": "shell",
-            "command": "wsl.exe",
+            "command": "avarice",
             "args": [
-                "ubuntu",
-                "-c",
                 // Replace "avarice [options]" with your specific avarice command
-                "avarice", "--edbg", "--jtag usb :4242"
+                "--edbg", "--jtag", "usb", ":4242"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

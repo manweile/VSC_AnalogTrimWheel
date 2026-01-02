@@ -7,7 +7,7 @@
         //  in WSL Ubuntu terminal: avarice --edbg --jtag usb :4242
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
         {
-            "name": "AVR Remote Debug",
+            "name": "Win AVR Remote Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf",
@@ -15,6 +15,22 @@
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\AVR\\avr8-gnu-toolchain\\bin\\avr-gdb.exe",
+            "miDebuggerServerAddress": "localhost:4242",
+            "logging": {
+                "engineLogging": true
+            },
+            "stopAtEntry": false,
+            "externalConsole": false,
+        },
+        {
+            "name": "WSL2 AVR Remote Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/avr-gdb",
             "miDebuggerServerAddress": "localhost:4242",
             "logging": {
                 "engineLogging": true
