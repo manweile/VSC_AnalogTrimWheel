@@ -1,6 +1,9 @@
 # Programming Environment
 TODO
 
+## System Environment Variables
+TODO
+
 ## WSL
 TODO
 

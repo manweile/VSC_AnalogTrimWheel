@@ -28,7 +28,7 @@ VS Code is Windows and/or Ubuntu (either free-standing or via WSL), far more ext
 Far and away the devil I know and comprehend. Sure the documentation could be better, but hey, isn't all software like that?
 
 #### Arduino IDE
-Let's face it, the Arduino IDE the sandbox. It's where you start, but you sure as hell out grow it quickly.
+Let's face it, the Arduino IDE is the sandbox. It's where you start, but you sure as hell out grow it quickly.
 It does have it's uses though - quick way to get the avr tools (avr-gcc, avr-gd, avrdude), third party libraries, board management, etc.
 Arduino IDE is a staring point - installing it gets you a Windows avr toolchain and board packages.
 You're going to need it installed anyways if you want to do arduino coding with Microchip Studio.
@@ -41,7 +41,7 @@ I will grant the device programming dialog GUI is easier to use with Atmel-Ice t
 
 #### Visual Studio
 VS Code's big brother might be an option worth looking into. The portability/availability of extensions will probably be the deciding factor.
-BTW, Microchip Studio is aport of Visual Studio. Not sure how Microchip pulled that off.
+BTW, Microchip Studio is a port of Visual Studio. Not sure how Microchip pulled that off.
 
 #### Eclipse
 No, just no. Been there, done that with java, real PITA to configure. Don't even want to try for avr mcu's.
