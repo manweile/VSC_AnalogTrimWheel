@@ -120,8 +120,6 @@ int currentSensor() {
 
   // updates the value by performing an analogRead() and calculating a responsive value based off it
   sensorReader.update();
-
-  // get the responsive value from last update
   currentSensor = sensorReader.getValue();
 
   return currentSensor;
@@ -152,6 +150,7 @@ int sensorDelta(int oldSensor, int newSensor) {
     sensorDiff = oldSensor + sensorDiff;
   }
 
+  // IFF we fall through both blocks, we return the initial value
   return sensorDiff;
 }
 
@@ -212,7 +211,9 @@ void setup() {
 
   Joystick.begin();
   Joystick.setRyAxisRange(MIN_RANGE, MAX_RANGE);
-  Joystick.setRyAxis(prevJoystick);
+
+  // ArduinoJoystickLibrary is expecting int32_t (long) type
+  Joystick.setRyAxis(static_cast<long>(prevJoystick));
 }
 
 
@@ -247,6 +248,7 @@ void loop() {
   if (DEBUG) {
     long rotationValue;
     long maxJoystick = 65536;
+
     // map the rx axis value, 0 to (max turns * full turn), 0 to 2^16
     rotationValue = map(axisValue, MIN_RANGE, MAX_RANGE, MIN_RANGE, maxJoystick);
 
@@ -256,6 +258,7 @@ void loop() {
       rotationValue = maxJoystick;
     }
 
+    // Serial.print has limitations that sprintf doesn't, but sprintf needs different setup
     char printBuffer[150];
     sprintf(
       printBuffer,
@@ -266,11 +269,10 @@ void loop() {
     delay(DELAY);
   }
 
-  // update for next iteration
   prevJoystick = newJoystick;
   prevSensor = newSensor;
 
-  // always need a little delay so mcu doesn't get overwhelmed (the good old 1204 error!)
+  // always need a little delay so mcu doesn't get overwhelmed (the good old Apollo 11 1204 error!)
   if(!DEBUG) {
     delay(DELAY);
   }
