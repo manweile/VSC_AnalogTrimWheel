@@ -16,7 +16,10 @@ This project was as much for learning how to break free of Microchip Studio as b
 - AVaRICE
 - avr toolchain
 - arduino-cli
+
+## Purchased Tools
 - Atmel-ICE
+- Visual Micro
 
 ### IDES
 #### VS Code
@@ -46,11 +49,11 @@ No, just no. Been there, done that with java, real PITA to configure. Don't even
 ### Interfacing Software
 To hardware debug with Atmel-Ice, you need interfacing software between Atmel-ICE, avr-gdb, and your mcu.
 
-### pyOCD
+#### pyOCD
 Was a non-starter, I simply could not get it to work. A pity, because I really liked the os-agnosticism inherent to a python app.
 Uninstalled, but going to keep an eye on it in case it gets usable.
 
-### OpenOCD
+#### OpenOCD
 Was far more promising, but still only a partial success.
 Supposedly, Microchip Studio uses OpenOCD "under the hood", but I couldn't get native OpenOCD to work with my Arduino Micro & Pro Micro (atmega32u4).
 Documentation is conflicting on OpenOCD working with AVR mcu's, it really appears to be slanted to SAM/ARM mcu's, which I don't have any of (yet).
@@ -85,12 +88,18 @@ Avrdude is a command line application, and easily used with VS Code tasks.
 AVRDUDESS https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/ is a gui wrapper for avrdude.
 Quite useful when you have something kinda one off that you don't have a VS Code task configured (restoring boot loaders for one!), and want a graphic interface for avrdude.
 
-### Arduino-cli
+#### Arduino-cli
 Arduino CLI is an all-in-one command line solution that provides Boards/Library Managers, sketch builder, board detection, uploader, and many other tools.
 It's the hidden motor that runs in Arduino IDE. Christ knows why Arduino did that, forcing you to a manually install if you want to leverage it into VS Code.
 The documentation is adequate (https://docs.arduino.cc/arduino-cli/), but sure would like to find a well formatted pdf, or better yet, a hard cover manual.
 The beauty of arduino-cli is you can do so much with it from VS Code tasks!
 What's more, Arduino replaced make with arduino-cli compile functionality, it's actually easier to compile with.
 
-### Atmel-ICE
+### Hardware Programmer
+#### Atmel-ICE
 TODO
+
+## BOM
+TODO
+
+
