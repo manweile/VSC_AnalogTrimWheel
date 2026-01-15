@@ -115,7 +115,6 @@ ResponsiveAnalogRead sensorReader(ANALOG_PIN, false);
 * @return {int} currentSensor The current sensor value.
 */
 int currentSensor() {
-  // the value from sensor
   int currentSensor;
 
   // updates the value by performing an analogRead() and calculating a responsive value based off it
@@ -134,7 +133,6 @@ int currentSensor() {
 * @return {int} sensorDiff Constrained sensor value.
 */
 int sensorDelta(int oldSensor, int newSensor) {
-  // the constrained sensor difference
   int sensorDiff;
 
   // initial value presuming user stayed within delta rotation threshold
@@ -157,8 +155,8 @@ int sensorDelta(int oldSensor, int newSensor) {
 
 /**
 * @brief Enforce the user's input to specified min/max joystick range constants.
-* @param {long} joystickInput Movement input by user.
-* @return {long} enforcedJoystick Enforced joystick value.
+* @param {int} joystickInput Movement input by user.
+* @return {int} enforcedJoystick Enforced joystick value.
 */
 int enforceJoystickRange(int joystickInput) {
   /*
@@ -207,6 +205,8 @@ void setup() {
 
   // set initial sensor and joystick values
   prevSensor = currentSensor();
+
+  // while arduino map function is written to use all longs, you can supply all ints
   prevJoystick = map(prevSensor, MIN_RANGE, JOY_ADC, MIN_RANGE, MAX_RANGE);
 
   Joystick.begin();
@@ -218,26 +218,17 @@ void setup() {
 
 
 void loop() {
-  // movement after rotation threshold constraining
-  int joystickMove;
-
-  // joystick value after abs min/max constraining
-  int newJoystick;
-
-  // new value after user has moved sensor
-  int newSensor;
-
-  // axis value sent to computer
   long axisValue;
-
-  // sensor value constrained for threshold delta value
+  int joystickMove;
+  int newJoystick;
+  int newSensor;
   int sensorThresh;
 
-  // sensor constrained rotation delta value give us our sensitivity to change
+  // sensor rotation delta value gives us our sensitivity to change
   newSensor = currentSensor();
   sensorThresh = sensorDelta(prevSensor, newSensor);
 
-  // accumulate our joystick value and keep it within operating range
+  // once we accumulate our joystick value, need to keep it within operating range
   joystickMove = prevJoystick + sensorThresh;
   newJoystick = enforceJoystickRange(joystickMove);
 
@@ -246,8 +237,8 @@ void loop() {
   Joystick.setRyAxis(axisValue);
 
   if (DEBUG) {
-    long rotationValue;
     long maxJoystick = 65536;
+    long rotationValue;
 
     // map the rx axis value, 0 to (max turns * full turn), 0 to 2^16
     rotationValue = map(axisValue, MIN_RANGE, MAX_RANGE, MIN_RANGE, maxJoystick);
