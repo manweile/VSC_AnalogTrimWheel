@@ -3,6 +3,7 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        // leaving this in for eventual SAM mcu usage
         // openocd -f interface/cmsis-dap.cfg -c "set CHIPNAME atmega32u4" -c "source [find target/atmega32u4.cfg]" -c "init" -c "reset halt"
         {
             "label": "Start Win OpenOCD Server",
@@ -25,7 +26,7 @@
                 "reveal": "always"
             },
         },
-        // in WSL Ubuntu terminal: gerald@MSI-DESKTOP:~$ avarice --edbg --jtag usb :4242
+        // in WSL Ubuntu terminal: <user>@<computer>:~$ avarice --edbg --jtag usb :4242
         {
             "label": "Start Avarice in WSL Ubuntu",
             "type": "shell",
@@ -155,6 +156,7 @@
             },
             "problemMatcher": []
         },
+        // all avrdude tasks require avrdude path in User and/or System PATH
         // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf:e
         {
             "label": "avrdude atmel-ice elf upload",

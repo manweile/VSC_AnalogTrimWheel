@@ -1,4 +1,4 @@
-1) ensure fuses 
+1) ensure fuses
 a) via Micro chip Studio Device Programming dialog:
 Tool:               Atmel-Ice
 Device:             ATmega32u4
@@ -29,12 +29,12 @@ LOW                 0xFF
 LOCK BITS
 Lock Bit Register:  Value:
 LOCKBIT             0xFF
-      
+
 LOCKBIT.LB:         No memory lock features enabled
 LOCKBIT.BLB0:       No lock on SPM and LPM in Application Section
 LOCKBIT.BLB1:       No lock on SPM and LPM in Boot Section
 
-b) via ASVRDUDESS Fuse and Lock Bits Selector 
+b) via AVRDUDESS Fuse and Lock Bits Selector
 NB 1 actually means off, 0 means on
 Lock Bits:      Value:
 bit7            1
@@ -79,7 +79,7 @@ BODLEVEL0       1
 EFUSE           0xCB
 
 c) via avrdude command line for atmega32u4 via atmel-ice ISP mode, LFUSE: 0xFF, HFUSE: 0x18, EFUSE: 0xCB
-avrdude -c atmelice_isp -p atmega32u4 -P usb -U lfuse:w:0xff:m -U hfuse:w:0x18:m -U efuse:w:0xcb:m 
+avrdude -c atmelice_isp -p atmega32u4 -P usb -U lfuse:w:0xff:m -U hfuse:w:0x18:m -U efuse:w:0xcb:m
 
 2) openocd cli for atmel via jtag to arduino micro
 openocd -f interface/cmsis-dap.cfg -c "set CHIPNAME atmega32u4" -c "source [find target/atmega32u4.cfg]"

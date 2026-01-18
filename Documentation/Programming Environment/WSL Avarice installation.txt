@@ -4,7 +4,7 @@ WSL Avarice install
 open a WSL terminal
 ############################################################################################################################
 Update and upgrade WSL:
-gerald@MSI-DESKTOP:~$ sudo apt update && sudo apt upgrade -y
+<user>@<computer>:~$ sudo apt update && sudo apt upgrade -y
 [sudo] password for gerald:
 Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
 Hit:2 http://archive.ubuntu.com/ubuntu noble InRelease
@@ -30,12 +30,12 @@ Use 'sudo apt autoremove' to remove them.
 
 The following NEW packages will be installed:
   libllvm20
-  
+
 The following packages have been kept back:
   libgl1-amber-dri
-  
+
 The following packages will be upgraded:
-  apparmor apt apt-utils base-files binutils binutils-common binutils-x86-64-linux-gnu bsdextrautils bsdutils cloud-init coreutils dconf-gsettings-backend 
+  apparmor apt apt-utils base-files binutils binutils-common binutils-x86-64-linux-gnu bsdextrautils bsdutils cloud-init coreutils dconf-gsettings-backend
   ...
   ubuntu-pro-client-l10n ubuntu-release-upgrader-core udev update-manager-core util-linux uuid-runtime wsl-pro-service wsl-setup
 
@@ -62,7 +62,7 @@ Processing triggers ...
 
 ############################################################################################################################
 install avarice:
-gerald@MSI-DESKTOP:~$ sudo apt install avarice
+<user>@<computer>:~$ sudo apt install avarice
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
@@ -93,7 +93,7 @@ Fetched 3690 kB in 2s (2438 kB/s)
 
 Selecting previously unselected package libhidapi-libusb0:amd64.
 
-(Reading database ... 
+Reading database ...
 Preparing to unpack ...
 Unpacking ...
 Setting up ...
