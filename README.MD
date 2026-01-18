@@ -71,7 +71,8 @@ I prefer the arduino avr toolchain. Why? Because it's maintained, compiled for W
 You can update the IDE itself, which might update your tool chain. Personally, I like the 7.3.0-atmel3.6.1-arduino5 toolchain that came with installing Arduino IDE 2.2 version.  
 You can manually update the toolchain by going to https://github.com/arduino/toolchain-avr, grabbing the zip file for the version you want, and extract to correct location.  
 - On Windows: C:\Users\<USER>\AppData\Local\Arduino15\packages\arduino\tools  
-- On Linux (Ubuntu): /HOME/<user>/.arduino15/packages/arduino/tools/   
+- On Linux (Ubuntu): /HOME/<user>/.arduino15/packages/arduino/tools/
+
 Just remember if you any environment variables looking at those locations, you'll need to edit them!  
 
 #### Manual AVR toolchain
