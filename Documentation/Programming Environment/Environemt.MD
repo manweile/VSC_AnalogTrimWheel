@@ -4,12 +4,11 @@ This project was as much for learning how to break free of Microchip Studio as b
 
 # Tools Used
 - Atmel-ICE
-- VS Code & Extensions
 - Arduino IDE
-- avrdude
-- avr toolchain (avr-gdb, avr-gcc)
+- avr toolchain (avr-gdb, avr-gcc, avrdude)
 - Arduino-CLI
 - AVRDUDESS (optional)
+- VS Code & Extensions
 - WSL2
 - AVaRICE
 
@@ -23,7 +22,6 @@ Follow the JTAG_ICE setup and use from WSL.txt file.
 ## ArduinoIDE
 Let's face it, the Arduino IDE is the sandbox. It's where you start, but you sure as hell out grow it quickly.  
 It does have it's uses though - quick way to get the avr tools (avr-gcc, avr-gdb, avrdude), third party libraries, board management, etc.  
-Arduino IDE is a staring point - installing it gets you a Windows avr toolchain and board packages.  
 You're going to need it installed anyways if you want to do arduino coding with Microchip Studio.
 https://www.arduino.cc/en/software/
 
@@ -42,14 +40,10 @@ Many variations here. https://www.tonymitchell.ca/tags/avr/ is a good source of 
 You will highly probably need to do some Linux on Windows setup - be it WSL or Cygwin, MYSYS2, etc.  
 Again, don't forget about those environment variables!  
 
-## AVRDUDE
+### AVRDUDE
 Avrdude (AVR Downloader Uploader) https://avrdudes.github.io/avrdude/ is a program for downloading and uploading the on-chip memories of Atmel’s AVR microcontrollers.  
 It comes with the avr toolchain (all flavours and source I have seen so far). It's what Microchip Studio and Arduino IDE use under the hood to get code onto your mcu.  
 Avrdude is a command line application, and easily used with VS Code tasks.  
-
-## AVRDUDESS
-AVRDUDESS https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/ is a gui wrapper for avrdude.  
-Quite useful when you have something kinda one off that you don't have a VS Code task configured (restoring boot loaders for one!), and want a graphic interface for avrdude.  
 
 ## Arduino-CLI
 Arduino CLI is an all-in-one command line solution that provides Boards/Library Managers, sketch builder, board detection, uploader, and many other tools.  
@@ -77,6 +71,12 @@ I found the important sections of the yaml file were:
   - user
         the equivalent of the Arduino IDE's "sketchbook" directory. You can copy from Arduino IDE preferences and past it into yaml file.
 
+## AVRDUDESS
+AVRDUDESS https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/ is a gui wrapper for avrdude.  
+Quite useful when you have something kinda one off that you don't have a VS Code task configured (restoring boot loaders for one!), and want a graphic interface for avrdude.  
+I also find it good for set fuses, you just have to be aware the in AVRDUDESS, a 1 for fuse actually means unset, and a 0 means set!  
+In this aspect MicroChip Studio's device programming dialog is actually more intuitive ... if you don't mind the baggage that comes with.  
+
 ## VSCODE
 Why? Because it's hella easier to use than Microchip Studio, it's better than Arduino IDE, it's very well supported, and it's free.  
 VS Code is Windows and/or Ubuntu (either free-standing or via WSL), far more extensions available (and almost all are free), and I have used it for 10 years now.  
@@ -85,30 +85,45 @@ Far and away the devil I know and comprehend. Sure the documentation could be be
 ### Extensions
 #### Required
 - C/C++: https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools
-Need this for Intellisense and debugging.
+      Need this for Intellisense and debugging.
 
 #### Optional
 - WSL: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl
+      Convenient if you want to build Linux applications that run on WSL without the hassle of dual booting or a full virtual machine.
 
 #### Failures
 - PlatformIO https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide
     Couldn't get it to work for my AVR mcu's or with Atmel-ICE.  
-    From the PlatformIO documentation, it really looks like really optimized for SAM/ARM mcu Arduino's, but not AVR mcu's. 
+    From the PlatformIO documentation, it really looks like really optimized for SAM/ARM mcu Arduino's, but not AVR mcu's.  
+    Also looks like might be the go to for ESP32 mcu's which I do have.  
 
 - Arduino Community Edition https://marketplace.visualstudio.com/items?itemName=vscode-arduino.vscode-arduino-community
     Gave me nothing but grief. Actually bricked my micro and pro micro boards.  
     Appears to be really optimized for SAM/ARM mcu Arduino's, but not AVR mcu's. 
 
 ### System Environment Variables
-You can create environment variables here that your c_cpp_properties.json can use.
-TODO eg
+You can create and use custom environment variables that your c_cpp_properties.json can use.
+Note if you update a path pointed to by a custom environment variable, you have to update the variable!
+You also need to name the custom variable ARDUINO_, and be aware that the Arduino-CLI can use custom variables too.  
+Eg. ARDUINO_DIRECTORIES_USER is D:\MyArduino\Projects on my computer.
+Make sure you are not conflicting, refer to https://docs.arduino.cc/arduino-cli/configuration/#configuration-keys to check!
+
+- ARDUINO_HARDWARE_CORES:     C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\cores
+- ARDUINO_HARDWARE_LIBRARIES: C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\libraries
+- ARDUINO_HARDWARE_VARIANTS:  C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\variants
+- ARDUINO_LIBRARIES:          D:\MyArduino\Projects\Libraries
+- ARDUINO_TOOLS:              C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools
+
+Now I can use thees system variables in the c_cpp_properties.json and NOT have to put in a long ass OS specific path.  
+You still have to maintain the path no matter what, but now it's only in 1 place.  
 
 #### PATH
-arduino-cli
-avrdude
+To use applications like arduino-cli, avr-gdb, avrdude, etc., in VSCode tasks.json and launch.json files, you must have them in your path. 
+User or Environment really doesn't matter, so long as they are available.
 
 ### tasks.json
-TODO
+tasks.json is where you get to leverage everything.  
+
 
 ### launch.json
 TODO
@@ -117,13 +132,13 @@ TODO
 This where you get you Intellisense from!  
 Specifically, if you have 3rd party libraries, you need to put their paths here.  
 
-## WSL
+## WSL2
 A WSL2 (Windows Subsystem for Linux) install was the winning solution.  
 The primary reason was the libhidapi library - getting via Cygwin, MYSYS, or GetGNUWin32 proved to be impossible.  
 Plenty of good documentation from Microsoft: https://learn.microsoft.com/en-us/windows/wsl/install
 
 ### AVaRICE on WSL2
-The winner (no shit sherlock, literally made for AVR mcu's and Atmel-ICE!), downside is still had to jump through some hoops to run on Windows, as it really Linux based.  
+The winner (no shit sherlock, literally made for AVR mcu's and Atmel-ICE!), downside is still had to jump through some hoops to run on Windows, as it is really Linux based.  
 Namely, had to run AVaRICE on WSL Ubuntu, and do some fancy dancing with usbipd-win to get communication with the Atmel-Ice.  
 This setup is somewhat kludgey, namely, I have to revert the usbipd configuration to restore normal Windows operation with Atmel-Ice, arduino-cli & avrdude.  
 Needs further investigation to see if I can streamline VS code launch and tasks operations.
@@ -134,7 +149,6 @@ Follow the WSL Avarice installation.txt file.
 ### Microchip Studio
 Frankly, unless you really need to go deep into the bare metal, registers and assembly code, you don't need it, and it's only for Microchip mcu's anyways.  
 Microchip is no longer updating it, and they are pushing you hard to switch to MPLAB. No thank you.  
-Visual Micro is a paid extension for Microchip Studio, and does make Microchip Studio somewhat more bearable (at a cost of steeper learning curve).  
 I will grant the device programming dialog GUI is easier to use with Atmel-Ice than avrdude cli and about equal with avrdudess GUI though. 
 
 #### Visual Micro
@@ -142,7 +156,8 @@ Visual Micro (https://www.visualmicro.com/) is paid extension for MicroChip Stud
 While it does help MicroChip Studio, it has it's own learning curve and foibles.
 
 ### Visual Studio
-VS Code's big brother might be an option worth looking into. The portability/availability of extensions will probably be the deciding factor.  
+VS Code's big brother might be an option worth looking into.  
+The portability/availability of extensions will probably be the deciding factor.  
 I don't know if VSCode extensions are Visual Studio compatible. Sure would be nice if they are.  
 BTW, Microchip Studio is a port of Visual Studio. Not sure how Microchip pulled that off.  
 
@@ -150,7 +165,7 @@ BTW, Microchip Studio is a port of Visual Studio. Not sure how Microchip pulled 
 No, just no. Been there, done that with java, real PITA to configure. Don't even want to try for avr mcu's.  
 
 ## Interfacing Software
-To hardware debug with Atmel-Ice, you need interfacing software between Atmel-ICE, avr-gdb, and your mcu.  
+To hardware debug with Atmel-ICE, you need interfacing software between Atmel-ICE, avr-gdb, and your mcu.  
 
 ### pyOCD
 Was a non-starter, I simply could not get it to work. A pity, because I really liked the os-agnosticism inherent to a python app.  

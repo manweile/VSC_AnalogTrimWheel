@@ -4,17 +4,19 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        //  in WSL Ubuntu terminal: avarice --edbg --jtag usb :4242
+        // in MYSYS2 MYSYS terminal: ./avarice --edbg --jtag usb :4242
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
         {
-            "name": "Win AVR Remote Debug",
+            "name": "Win AVaRICE Remote Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf",
             "args": [],
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\AVR\\avr8-gnu-toolchain\\bin\\avr-gdb.exe",
+            // "miDebuggerPath": "C:\\AVR\\avr8-gnu-toolchain\\bin\\avr-gdb.exe",
+            // "miDebuggerPath": "C:/Users/gmanw/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-gdb.exe",
+            "miDebuggerPath": "${env:ARDUINO_TOOLS_AVRGCC_BIN}/avr-gdb.exe",
             "miDebuggerServerAddress": "localhost:4242",
             "logging": {
                 "engineLogging": true
@@ -22,6 +24,8 @@
             "stopAtEntry": false,
             "externalConsole": false,
         },
+        //  in WSL Ubuntu terminal: avarice --edbg --jtag usb :4242
+        // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
         {
             "name": "WSL2 AVR Remote Debug",
             "type": "cppdbg",
@@ -50,8 +54,6 @@
                 "arduino.avr.micro",
                 "arduino.avr.promicro",
                 "arduino.avr.uno",
-                // "esp32.esp32.esp32thing",
-                // "esp8266.esp8266.thingdev",
                 "SparkFun.avr.promicro",
             ]
         },

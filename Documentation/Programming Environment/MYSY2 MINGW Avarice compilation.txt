@@ -1,0 +1,221 @@
+MYSYS MINGW AVaRICE compilation
+
+1) Download MYSYS2
+https://www.msys2.org/
+
+2) install MYSYS2
+
+3) Launch MYSYS2 MYSYS shell from Start menu
+
+4)in MYSYS2 MYSYS shell, update package database and core system packages
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ pacman -Syu
+a) the shell will close, reopen and run full system upgrade to complete
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ pacman -Su
+
+5) navigate to https://github.com/avrdudes/avarice/actions/runs/20374190577/job/58548209153
+a) expand Run mysys2/setup-mysys2@v2 > Installing additional packages through pacman...
+b) in MYSYS2 MYSYS shell, install libraries
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ pacman --noconfirm -S --needed --overwrite * git make unzip gcc libtool msys/autotools msys/autoconf-wrapper automake cmake msys/binutils mingw-w64-x86_64-libusb
+  
+6) Build libusb
+a) in browser, expand Build libusb > Run git clone https://github.com/libusb/libusb.git
+b) in MYSYS2 MYSYS shell, clone libusb repo
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ git clone https://github.com/libusb/libusb.git 
+c) cd to libusb dir
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ cd libusb/
+d) run bootstrap.sh
+   Gerald@MSI-DESKTOP MYSYS ~/libusb
+    $ ./bootstrap.sh
+e) run configure
+    Gerald@MSI-DESKTOP MYSYS ~/libusb
+    $ ./configure
+f) run make
+    Gerald@MSI-DESKTOP MYSYS ~/libusb
+    $ make -j6
+g) run make install
+    Gerald@MSI-DESKTOP MYSYS ~/libusb
+    $ make install
+
+7) Build libusb-compat-0.1
+a) in browser, expand Build libusb-compat-0.1 > Run git clone https://github.com/libusb/libusb-compat-0.1.git
+b) in MYSYS2 MYSYS shell, cd to /home/Gerald
+    Gerald@MSI-DESKTOP MYSYS ~/libusb
+    $ cd ..
+c)in MYSYS2 MYSYS shell, clone libusb-compat0.1 repo
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ git clone https://github.com/libusb/libusb-compat-0.1.git
+d) cd to libusb-compat0.1 dir
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ cd libusb-compat-0.1/
+e) run bootstrap.sh 
+    Gerald@MSI-DESKTOP MYSYS ~/libusb-compat-0.1
+    $ ./bootstrap.sh
+f) run configure
+    Gerald@MSI-DESKTOP MYSYS ~/libusb-compat-0.1
+    $ ./configure   
+g) run make
+    Gerald@MSI-DESKTOP MYSYS ~/libusb-compat-0.1
+    $ make -j6
+h) run make install
+    Gerald@MSI-DESKTOP MYSYS ~/libusb-compat-0.1
+    $ make install
+
+8) Build hidapi
+a) in browser, expand Build hidapi > Run git clone https://github.com/libusb/hidapi.git
+b) in MYSYS2 MYSYS shell, cd to /home/Gerald
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ cd hidapi/
+c) in MYSYS2 MYSYS shell, clone hidapi repo
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ git clone https://github.com/libusb/hidapi.git
+d) cd to hidapi dir
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ cd hidapi/
+e) run bootstrap
+    Gerald@MSI-DESKTOP MYSYS ~/hidapi
+    $ ./bootstrap
+f) run configure
+    Gerald@MSI-DESKTOP MYSYS ~/hidapi
+    $ ./configure
+g) run make all
+    Gerald@MSI-DESKTOP MYSYS ~/hidapi
+    $ make all -j4
+h) run make install
+    Gerald@MSI-DESKTOP MYSYS ~/hidapi
+    $ make install
+    
+9) Build AVaRICE
+a) in browser, expand Build AVaRICE
+b) in MYSYS2 MYSYS shell, cd to /home/Gerald
+    Gerald@MSI-DESKTOP MYSYS ~/hidapi
+    $ cd ..
+c) clone AVaRICE
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ git clone https://github.com/avrdudes/avarice
+d) cd to avarice dir
+    Gerald@MSI-DESKTOP MYSYS ~
+    $ cd avarice/
+e) run bootstrap
+    Gerald@MSI-DESKTOP MYSYS ~/avarice
+    $ ./Bootstrap
+f) run configure
+    Gerald@MSI-DESKTOP MYSYS ~/avarice
+    $ ./configure
+g) run make
+    Gerald@MSI-DESKTOP MYSYS ~/avarice
+    $ make -j6
+h) run make install
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ make install DESTDIR=$(pwd)/avarice_installed/
+i) verify installation
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ ls -R avarice_installed
+
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ file avarice_installed/usr/bin/*
+    avarice_installed/usr/bin/avarice.exe:   PE32+ executable for MS Windows 5.02 (console), x86-64, 19 sections
+    avarice_installed/usr/bin/ice-gdb:       Perl script text executable
+    avarice_installed/usr/bin/ice-insight:   POSIX shell script, ASCII text executable
+    avarice_installed/usr/bin/kill-avarice:  POSIX shell script, ASCII text executable
+    avarice_installed/usr/bin/start-avarice: POSIX shell script, ASCII text executable
+    
+    NB Github workflow shows slight difference here:
+    avarice_installed/usr/bin/ice-insight:   POSIX shell script, ASCII text executable, with CRLF line terminators
+    avarice_installed/usr/bin/kill-avarice:  POSIX shell script, ASCII text executable, with CRLF line terminators
+    avarice_installed/usr/bin/start-avarice: POSIX shell script, ASCII text executable, with CRLF line terminators
+    
+    Does not appear to affect functionality of executable.
+
+  Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ ldd avarice_installed/usr/bin/avarice
+        ntdll.dll => /c/Windows/SYSTEM32/ntdll.dll (0x7fffba750000)
+        KERNEL32.DLL => /c/Windows/System32/KERNEL32.DLL (0x7fffb9a20000)
+        aswhook.dll => /c/Program Files/Norton/Suite/aswhook.dll (0x7fff74980000)
+        KERNELBASE.dll => /c/Windows/System32/KERNELBASE.dll (0x7fffb8250000)
+        msys-2.0.dll => /usr/bin/msys-2.0.dll (0x180040000)
+        msys-gcc_s-seh-1.dll => /usr/bin/msys-gcc_s-seh-1.dll (0x5e8160000)
+        msys-hidapi-0.dll => /usr/bin/msys-hidapi-0.dll (0x522210000)
+        msys-usb-0-1-4.dll => /usr/bin/msys-usb-0-1-4.dll (0x5705a0000)
+        msys-stdc++-6.dll => /usr/bin/msys-stdc++-6.dll (0x526840000)
+        msys-usb-1.0.dll => /usr/bin/msys-usb-1.0.dll (0x54f690000)
+
+    NB Github workflow shows slight difference here:
+    ntdll.dll => /c/Windows/SYSTEM32/ntdll.dll (0x7ffb81a00000)
+	KERNEL32.DLL => /c/Windows/System32/KERNEL32.DLL (0x7ffb80340000)
+	KERNELBASE.dll => /c/Windows/System32/KERNELBASE.dll (0x7ffb7eb50000)
+
+    Does not appear to affect functionality of executable.
+    
+j) copy dll's
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ cp /mingw64/bin/libusb-1.0.dll avarice_installed/usr/bin/.
+    $ cp /mingw64/bin/libusb-1.0.dll avarice_installed/usr/bin/msys-usb-1.0.dll
+    $ cp /usr/bin/msys-2.0.dll avarice_installed/usr/bin/.
+    $ cp /usr/bin/msys-stdc++-6.dll avarice_installed/usr/bin/.
+    $ cp /usr/bin/msys-gcc_s-seh-1.dll avarice_installed/usr/bin/.
+    $ cp /usr/bin/msys-usb-0-1-4.dll avarice_installed/usr/bin/.
+    $ cp /usr/bin/msys-hidapi-0.dll avarice_installed/usr/bin/.
+
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ ls avarice_installed/usr/bin
+    avarice.exe  ice-gdb  ice-insight  kill-avarice  libusb-1.0.dll  msys-2.0.dll  msys-gcc_s-seh-1.dll  msys-hidapi-0.dll  msys-stdc++-6.dll  msys-usb-0-1-4.dll  msys-usb-1.0.dll  start-avarice
+    
+10) Run avarice
+a) version check
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ avarice_installed/usr/bin/avarice --version
+    AVaRICE version 2.14svn20200906, Jan 22 2026 12:32:04
+    
+b) device check
+    Gerald@MSI-DESKTOP MSYS ~/avarice
+    $ avarice_installed/usr/bin/avarice --known-devices || true
+    AVaRICE version 2.14svn20200906, Jan 22 2026 12:32:04
+
+    List of known AVR devices:
+
+    Device Name       Device ID     Flash    EEPROM
+    ---------------   ---------   -------   -------
+    at90can128           0x9781   128 KiB     4 KiB
+    ...
+    atxmega8e5           0x9341    10 KiB   0.5 KiB
+    
+    Device list matches Github workflow results
+    
+c) launch avarice session
+    Gerald@MSI-DESKTOP MSYS ~/avarice/avarice_installed/usr/bin
+    $ ./avarice --edbg --jtag usb :4242
+    AVaRICE version 2.14svn20200906, Jan 22 2026 12:32:04
+
+    Defaulting JTAG bitrate to 250 kHz.
+
+    JTAG config starting.
+    Found a device, serial number: J41800082278
+    Reported device ID: 0x9587
+    Configured for device ID: 0x9587 atmega32u4
+    JTAG config complete.
+    Preparing the target device for On Chip Debugging.
+    Waiting for connection on port 4242.
+
+d) launch debug session with Powershell
+    PS C:\Users\gmanw> cd d:\
+    PS D:\> cd D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro
+    PS D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro> avr-gdb.exe .\VSC_AnalogTrimWheel.ino.elf
+    GNU gdb 6.8
+    Copyright (C) 2008 Free Software Foundation, Inc.
+    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+    This is free software: you are free to change and redistribute it.
+    There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+    and "show warranty" for details.
+    This GDB was configured as "--host=i686-pc-mingw32 --target=avr"...
+    (gdb) target remote localhost:4242
+    Remote debugging using localhost:4242
+    0x00007000 in ?? ()
+    (gdb)
+    
+i) avarice console output:
+    Connection opened by host 127.0.0.1, port 37393.

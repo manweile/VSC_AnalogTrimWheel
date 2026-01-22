@@ -16,6 +16,8 @@ Successfully verified installer hash
 Starting package install...
 Successfully installed
 
+NB It's really good idea to make sure usbipd-win is in your system environment PATH.
+
 #########################################################################################################
 List available devices:
 Before connecting arduino micro:
