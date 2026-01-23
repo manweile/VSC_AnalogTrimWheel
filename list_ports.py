@@ -1,8 +1,14 @@
+
+# from google search: vs code tasks.json input com ports extension "Command Variable"
 import serial.tools.list_ports
 import sys
 
 
 def list_com_ports():
+    '''
+    TODO Docstring for list_com_ports
+    '''
+
     ports = serial.tools.list_ports.comports()
     if not ports:
         print("No COM ports found")

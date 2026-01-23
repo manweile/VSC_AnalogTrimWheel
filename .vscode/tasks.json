@@ -30,7 +30,7 @@
         // from google search AI: VS Code tasks.json for MSYS shell running avarice fro avarice installed/usr/bin directory
         // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
             {
-            "label": "MYSYS Bash Run AVaRICE Server",
+            "label": "MYSYS Bash AVaRICE Server",
             "type": "shell",
             "command": "avarice",
             "options": {
@@ -98,7 +98,7 @@
         // and a properly configured & located arduino-cli.yaml file
         // arduino-cli compile -v --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "Arduino-CLI production compile only",
+            "label": "Arduino-CLI Production File Compile",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -125,7 +125,7 @@
         // board MUST HAVE BOOTLOADER
         // arduino-cli upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "Arduino-CLI COM Port upload",
+            "label": "Arduino-CLI Production File COM Port Upload",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -149,36 +149,11 @@
             },
             "problemMatcher": []
         },
-        // this is functionally equivalent to the Arduino-CLI COM port upload task, for when board doesn't have bootloader
-        // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
-        {
-            "label": "Avrdude Atmel-ICE hex upload",
-            "type": "shell",
-            "command": "avrdude",
-            "args": [
-                "-v",
-                "-p${input:MCU}",
-                "-c", "${input:TARGET}",
-                "-P", "usb",
-                "-U","flash:w:${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.hex:i"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": []
-        }
         // compile and upload a production (hex) file
         // board MUST HAVE BOOTLOADER
         // arduino-cli compile --upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "Arduino-CLI production compile & COM port upload",
+            "label": "Arduino-CLI Production File Compile & COM Port Upload",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -205,9 +180,8 @@
         },
         // compile a debug (elf) file
         // arduino-cli compile --clean -v --fqbn arduino:avr:promicro --build-property 'compiler.c.extra_flags=-g3 -Og' --build-property 'compiler.cpp.extra_flags=-g3 -Og' "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
-        // should think about getting input for g3 and Og flags
         {
-            "label": "Arduino-CLI elf file compile only",
+            "label": "Arduino-CLI Debug File Compile",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -234,11 +208,11 @@
             },
             "problemMatcher": []
         },
-        // arduino-cli can not compile elf file and upload in single command line
+        // upload a debug (elf) file 
         // board MUST HAVE BOOTLOADER
         // arduino-cli upload  -v -p COM24 --fqbn arduino:avr:micro --input-file "D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf"
         {
-            "label": "Arduino-CLI elf file COM port upload",
+            "label": "Arduino-CLI Debug File COM Port Upload",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -263,11 +237,21 @@
             },
             "problemMatcher": []
         },
+        // arduino-cli can not compile & upload elf file single command line
+        {
+            "label": "Arduino-CLI Debug Compile & COM Port Upload",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Arduino-CLI Debug File Compile",
+                "Arduino-CLI Debug File COM Port Upload"
+            ],
+            "problemMatcher": []
+        },
         // all avrdude tasks require avrdude path in User and/or System PATH
         // functionally equivalent to Arduino-CLI elf file COM port upload, but for use when bootloader NOT on arduino board
         // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf:e
         {
-            "label": "Avrdude Atmel-ICE elf upload",
+            "label": "Avrdude Atmel-ICE Debug File Upload",
             "type": "shell",
             "command": "avrdude",
             "args": [
@@ -289,6 +273,73 @@
             },
             "problemMatcher": []
         },
+        // this is functionally equivalent to the Arduino-CLI COM port upload task, for when board doesn't have bootloader
+        // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
+        {
+            "label": "Avrdude Atmel-ICE Production File Upload",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-v",
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-P", "usb",
+                "-U","flash:w:${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.hex:i"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        // TODO Avrdude fuse setting OCDEN = 0, JTAGEN = 0 (both set)
+        // L, H & E fuses:  avrdude.exe -c atmelice_isp -p m32u4 -F -v -v -U lfuse:w:0x3F:m -U hfuse:w:0x18:m -U efuse:w:0xFB:m
+
+        // TODO Avrdude fuse setting OCDEN = 1, JTAGEN = 1 (both unset)
+        // L, H & E fuses:  avrdude.exe -c atmelice_isp -p m32u4 -F -v -v -U lfuse:w:0x3F:m -U hfuse:w:0xD8:m -U efuse:w:0xFB:m
+
+        // TODO Avrdude fuse setting Lockbits
+        // avrdude.exe -c atmelice_isp -p m32u4 -F -v -v -U lock:w:0xFF:m
+
+        // Avrdude bootloader restoration
+        // avrdude -v -p atmega32u4 -c atmelice_isp -F -U flash:w:"C:\Users\gmanw\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders\caterina\Caterina-Micro.hex":i 
+        // file picker input needs debugging
+        {
+            "label": "Avrdude Atmel-ICE Bootloader Restore",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-v",
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-F",
+                "-U",
+                "flash:w:${input:FILESELECT}:i"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo ${input:pickerInput}",
+            "problemMatcher": []
+        }
     ],
     "inputs": [
         // list of avr mcu's for the boards I have installed
@@ -347,6 +398,32 @@
                 // alternative windows only command: "powershell -Command \"[System.IO.Ports.SerialPort]::GetPortNames()\""
                 "command": "python ${workspaceFolder}/list_ports.py",
                 "description": "Select the COM port for upload"
+            }
+        },
+        {
+            // dynamic file picker using extension https://marketplace.visualstudio.com/items?itemName=dfarley1.file-picker
+            "id": "FILESELECT",
+            "type": "command",
+            "command": "filePicker.pick",
+            "args": {
+                // "masks": "${env:ARDUINO_HARDWARE_BOOTLOADERS}/caterina/*.hex",
+                "masks": "C:/Users/gmanw/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.2/bootloaders/**/*.hex",
+                "display": {
+                    "detail": "${fileRelativePath}"
+                },
+                "output": "fileName"
+            }
+        },
+        {
+            "id": "pickerInput",
+            "type": "command",
+            "command": "filePicker.pick",
+            "args": {
+                "masks": "apps/**/*.json",
+                "display": {
+                    "detail": "fileName",
+                },
+                "output": "fileName"
             }
         }
     ]

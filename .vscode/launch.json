@@ -6,6 +6,7 @@
     "configurations": [
         // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
+        // TODO pre-launch task start MYSYS AvaRICE Server
         {
             "name": "MYSYS AVaRICE Remote Debug",
             "type": "cppdbg",
@@ -27,6 +28,9 @@
         // in WSL Ubuntu terminal: avarice --edbg --jtag usb :4242
         // NB should also work on computer with Ubuntu OS
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
+        // TODO pre-launch task start MYSYS AvaRICE Server
+        // TODO pre-launch configure WSL2 usbipd 
+        // TODO post-shutdown restore Windows usbipd
         {
             "name": "WSL2 AVR Remote Debug",
             "type": "cppdbg",
