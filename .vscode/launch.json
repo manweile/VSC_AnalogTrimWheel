@@ -4,10 +4,10 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        // in MYSYS2 MYSYS terminal: ./avarice --edbg --jtag usb :4242
+        // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
         {
-            "name": "Win AVaRICE Remote Debug",
+            "name": "MYSYS AVaRICE Remote Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf",
@@ -24,7 +24,8 @@
             "stopAtEntry": false,
             "externalConsole": false,
         },
-        //  in WSL Ubuntu terminal: avarice --edbg --jtag usb :4242
+        // in WSL Ubuntu terminal: avarice --edbg --jtag usb :4242
+        // NB should also work on computer with Ubuntu OS
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
         {
             "name": "WSL2 AVR Remote Debug",

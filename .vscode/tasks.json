@@ -5,30 +5,76 @@
     "tasks": [
         // leaving this in for eventual SAM mcu usage
         // openocd -f interface/cmsis-dap.cfg -c "set CHIPNAME atmega32u4" -c "source [find target/atmega32u4.cfg]" -c "init" -c "reset halt"
+        // {
+        //     "label": "Win OpenOCD Server",
+        //     "type": "process",
+        //     "command": "openocd",
+        //     "args": [
+        //         "-c", "source [find interface/cmsis-dap.cfg]",
+        //         "-c", "set CHIPNAME ${input:MCU}",
+        //         "-c", "source [find target/${input:MCU}.cfg]",
+        //         "-c", "init",
+        //         "-c", "reset halt"
+        //     ],
+        //     "options": {
+        //         "cwd": "${workspaceFolder}"
+        //     },
+        //     "isBackground": true,
+        //     "problemMatcher": [],
+        //     "presentation": {
+        //         "panel": "new",
+        //         "reveal": "always"
+        //     }
+        // },
+        // proven to work
+        // from google search AI: VS Code tasks.json for MSYS shell running avarice fro avarice installed/usr/bin directory
+        // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
+            {
+            "label": "MYSYS Bash Run AVaRICE Server",
+            "type": "shell",
+            "command": "avarice",
+            "options": {
+                "shell": {
+                    "executable": "C:\\msys64\\usr\\bin\\bash.exe",
+                    "args": [
+                        "--login",
+                        "-c",
+                        "C:/msys64/home/Gerald/avarice/avarice_installed/usr/bin/avarice --edbg --jtag usb :4242"
+                    ]
+                },
+                "env": {
+                    "MSYSTEM": "MSYS",
+                    "CHERE_INVOKING": "1"
+                }
+            },
+            "problemMatcher": [],
+            "group": "none"
+        },
+        // also proven to work
+        // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
         {
-            "label": "Start Win OpenOCD Server",
-            "type": "process",
-            "command": "openocd",
+            "label": "MYSYS Shell AVaRICE Server",
+            "type": "shell",
+            "command": "C:/msys64/msys2_shell.cmd", 
             "args": [
-                "-c", "source [find interface/cmsis-dap.cfg]",
-                "-c", "set CHIPNAME ${input:MCU}",
-                "-c", "source [find target/${input:MCU}.cfg]",
-                "-c", "init",
-                "-c", "reset halt"
+                "-shell",
+                "bash",
+                "-c",
+                "C:/msys64/home/Gerald/avarice/avarice_installed/usr/bin/avarice --edbg --jtag usb :4242" 
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
             },
-            "isBackground": true,
-            "problemMatcher": [],
             "presentation": {
-                "panel": "new",
-                "reveal": "always"
+                "reveal": "always",
+                "panel": "shared"
             },
+            "problemMatcher": []
         },
+        // not as useful due to usbpid steps that have to be executed manually
         // in WSL Ubuntu terminal: <user>@<computer>:~$ avarice --edbg --jtag usb :4242
         {
-            "label": "Start Avarice in WSL Ubuntu",
+            "label": "WSL Ubuntu AVaRICE Server",
             "type": "shell",
             "command": "avarice",
             "args": [
@@ -49,9 +95,10 @@
             "problemMatcher": []
         },
         // all arduino-cli tasks require arduino-cli path in User and/or System PATH
+        // and a properly configured & located arduino-cli.yaml file
         // arduino-cli compile -v --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "arduino-cli production compile only",
+            "label": "Arduino-CLI production compile only",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -74,9 +121,93 @@
             },
             "problemMatcher": []
         },
-        // arduino-cli compile --clean --fqbn arduino:avr:promicro --build-property compiler.c.extra_flags=-Og --build-property compiler.cpp.extra_flags=-Og "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
+        // upload a production (hex) file
+        // board MUST HAVE BOOTLOADER
+        // arduino-cli upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
         {
-            "label": "arduino-cli debug compile only",
+            "label": "Arduino-CLI COM Port upload",
+            "type": "shell",
+            "command": "arduino-cli",
+            "args": [
+                "upload",
+                "-v",
+                "-p",
+                "${input:COMPort}",
+                "--fqbn",
+                "${input:FQBN}",
+                "${workspaceFolder}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        // this is functionally equivalent to the Arduino-CLI COM port upload task, for when board doesn't have bootloader
+        // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
+        {
+            "label": "Avrdude Atmel-ICE hex upload",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-v",
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-P", "usb",
+                "-U","flash:w:${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.hex:i"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+        // compile and upload a production (hex) file
+        // board MUST HAVE BOOTLOADER
+        // arduino-cli compile --upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
+        {
+            "label": "Arduino-CLI production compile & COM port upload",
+            "type": "shell",
+            "command": "arduino-cli",
+            "args": [
+                "compile",
+                "--upload",
+                "-v",
+                "-p",
+                "${input:COMPort}",
+                "--fqbn",
+                "${input:FQBN}",
+                "${workspaceFolder}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        // compile a debug (elf) file
+        // arduino-cli compile --clean -v --fqbn arduino:avr:promicro --build-property 'compiler.c.extra_flags=-g3 -Og' --build-property 'compiler.cpp.extra_flags=-g3 -Og' "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
+        // should think about getting input for g3 and Og flags
+        {
+            "label": "Arduino-CLI elf file compile only",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -103,9 +234,11 @@
             },
             "problemMatcher": []
         },
-        // arduino-cli upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
+        // arduino-cli can not compile elf file and upload in single command line
+        // board MUST HAVE BOOTLOADER
+        // arduino-cli upload  -v -p COM24 --fqbn arduino:avr:micro --input-file "D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf"
         {
-            "label": "arduino-cli COM Port upload",
+            "label": "Arduino-CLI elf file COM port upload",
             "type": "shell",
             "command": "arduino-cli",
             "args": [
@@ -115,34 +248,8 @@
                 "${input:COMPort}",
                 "--fqbn",
                 "${input:FQBN}",
-                "${workspaceFolder}"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": []
-        },
-        // arduino-cli compile --upload  -v -p COM26 --fqbn arduino:avr:promicro "D:\MyArduino\Projects\VSC_AnalogTrimWheel"
-        {
-            "label": "arduino-cli production compile & COM port upload",
-            "type": "shell",
-            "command": "arduino-cli",
-            "args": [
-                "compile",
-                "--upload",
-                "-v",
-                "-p",
-                "${input:COMPort}",
-                "--fqbn",
-                "${input:FQBN}",
-                "${workspaceFolder}"
+                "-i",
+                "${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.elf"
             ],
             "group": {
                 "kind": "build",
@@ -157,9 +264,10 @@
             "problemMatcher": []
         },
         // all avrdude tasks require avrdude path in User and/or System PATH
+        // functionally equivalent to Arduino-CLI elf file COM port upload, but for use when bootloader NOT on arduino board
         // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf:e
         {
-            "label": "avrdude atmel-ice elf upload",
+            "label": "Avrdude Atmel-ICE elf upload",
             "type": "shell",
             "command": "avrdude",
             "args": [
@@ -181,30 +289,6 @@
             },
             "problemMatcher": []
         },
-        // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
-        {
-            "label": "avrdude atmel-ice hex upload",
-            "type": "shell",
-            "command": "avrdude",
-            "args": [
-                "-v",
-                "-p${input:MCU}",
-                "-c", "${input:TARGET}",
-                "-P", "usb",
-                "-U","flash:w:${workspaceFolder}/build/${input:FQBNDIR}/${fileBasename}.hex:i"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": []
-        }
     ],
     "inputs": [
         // list of avr mcu's for the boards I have installed
@@ -213,7 +297,7 @@
             "id": "MCU",
             "description": "AVR mcu for upload",
             "options": [
-                "atmega32u4",       // Leonardo, Micro, Pro Micro
+                "atmega32u4",       // Micro, Pro Micro
                 "atmega328p",       // Uno
                 "atmega2560"        // Mega 2560
             ]
@@ -238,8 +322,6 @@
                 "arduino:avr:micro",
                 "arduino:avr:promicro",
                 "arduino:avr:uno",
-                // "esp32:esp32:esp32thing",
-                // "esp8266:esp8266:thingdev",
                 "SparkFun:avr:promicro",
             ]
         },
@@ -253,8 +335,6 @@
                 "arduino.avr.micro",
                 "arduino.avr.promicro",
                 "arduino.avr.uno",
-                // "esp32.esp32.esp32thing",
-                // "esp8266.esp8266.thingdev",
                 "SparkFun.avr.promicro",
             ]
         },
