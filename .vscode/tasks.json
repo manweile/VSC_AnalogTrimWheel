@@ -29,6 +29,7 @@
         // proven to work
         // from google search AI: VS Code tasks.json for MSYS shell running avarice fro avarice installed/usr/bin directory
         // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
+        // fuses MUST be set for debugging
             {
             "label": "MYSYS Bash AVaRICE Server",
             "type": "shell",
@@ -52,6 +53,7 @@
         },
         // also proven to work
         // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
+        // fuses MUST be set for debugging
         {
             "label": "MYSYS Shell AVaRICE Server",
             "type": "shell",
@@ -73,6 +75,7 @@
         },
         // not as useful due to usbpid steps that have to be executed manually
         // in WSL Ubuntu terminal: <user>@<computer>:~$ avarice --edbg --jtag usb :4242
+        // fuses MUST be set for debugging
         {
             "label": "WSL Ubuntu AVaRICE Server",
             "type": "shell",
@@ -312,7 +315,49 @@
                 "-U","flash:w:${input:openDialog}:i"
             ],
             "problemMatcher": []
+        },
+        // read fuses with Atmel-ICE hooked up to ISP
+        // avrdude -p atmega32u4 -c atmelice_isp -F -U hfuse:r:-:h -U lfuse:r:-:h -U efuse:r:-:h
+        {
+            "label": "Avrdude Atmel-ICE Fuse Reading",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-F",
+                "-U", "lfuse:r:-:h",
+                "-U", "hfuse:r:-:h",
+                "-U", "efuse:r:-:h"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
         }
+        // TODO avrdude task to set/unset debugging fuses on micro, promicro, mega2560, uno
+        // tasks.json to set avrdude atmega32u4 debugging fuses with Atmel-ICE on ISP
+        // tasks.json to set avrdude mega2560 debugging fuses with Atmel-ICE on ISP
+        // tasks.json to set avrdude uno debugging fuses with Atmel-ICE on ISP
+        // NB Uno requires extra steps
+        // use avrdudess to get command lines
+        // use avrdudess bit selector for confirmation of fuse values
+        // use Microchip Studio Device Programming dialog for confirmation of fuse values
+        // {
+        //     "label": "Avrdude Atmel-ICE Fuse Seting",
+        //     "type": "shell",
+        //     "command": "avrdude",
+        //     "args": [
+        //         "-v",
+        //         "-p${input:MCU}",
+        //         "-c", "${input:TARGET}",
+        //         "-F",
+        //         "-U","flash:w:${input:openDialog}:i"
+        //     ],
+        //     "problemMatcher": []
+        // }
     ],
     "inputs": [
         // list of avr mcu's for the boards I have installed
