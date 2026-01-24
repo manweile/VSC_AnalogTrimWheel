@@ -298,6 +298,21 @@
             },
             "problemMatcher": []
         },
+        // restore bootloader
+        // avrdude -v -p atmega32u4 -c atmelice_isp -F -U flash:w:"C:\Users\gmanw\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders\caterina\Caterina-Micro.hex":i 
+        {
+            "label": "Avrdude Atmel-ICE Restore Bootloader",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-v",
+                "-p${input:MCU}",
+                "-c", "${input:TARGET}",
+                "-F",
+                "-U","flash:w:${input:openDialog}:i"
+            ],
+            "problemMatcher": []
+        }
     ],
     "inputs": [
         // list of avr mcu's for the boards I have installed
@@ -356,6 +371,19 @@
                 // alternative windows only command: "powershell -Command \"[System.IO.Ports.SerialPort]::GetPortNames()\""
                 "command": "python ${workspaceFolder}/list_ports.py",
                 "description": "Select the COM port for upload"
+            }
+        },
+        {
+            "id": "openDialog",
+            "type": "command",
+            "command": "extension.commandvariable.file.openDialog",
+            "args": {
+                "canSelect": "files",
+                "defaultUri": "${env:ARDUINO_HARDWARE_BOOTLOADERS}",
+                "include": "**/*.hex",
+                "filters": {
+                    "Hex": ["hex"]
+                }
             }
         }
     ]
