@@ -310,36 +310,36 @@
         // Avrdude bootloader restoration
         // avrdude -v -p atmega32u4 -c atmelice_isp -F -U flash:w:"C:\Users\gmanw\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders\caterina\Caterina-Micro.hex":i 
         // file picker input needs debugging
-        {
-            "label": "Avrdude Atmel-ICE Bootloader Restore",
-            "type": "shell",
-            "command": "avrdude",
-            "args": [
-                "-v",
-                "-p${input:MCU}",
-                "-c", "${input:TARGET}",
-                "-F",
-                "-U",
-                "flash:w:${input:FILESELECT}:i"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "echo",
-            "type": "shell",
-            "command": "echo ${input:pickerInput}",
-            "problemMatcher": []
-        }
+        // {
+        //     "label": "Avrdude Atmel-ICE Bootloader Restore",
+        //     "type": "shell",
+        //     "command": "avrdude",
+        //     "args": [
+        //         "-v",
+        //         "-p${input:MCU}",
+        //         "-c", "${input:TARGET}",
+        //         "-F",
+        //         "-U",
+        //         "flash:w:${input:FILESELECT}:i"
+        //     ],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        //     "presentation": {
+        //         "echo": true,
+        //         "reveal": "always",
+        //         "focus": false,
+        //         "panel": "shared"
+        //     },
+        //     "problemMatcher": []
+        // },
+        // {
+        // "label": "Echo Selected File",
+        // "type": "shell",
+        // "command": "echo ${input:FILESELECT}",
+        // "problemMatcher": []
+        // }
     ],
     "inputs": [
         // list of avr mcu's for the boards I have installed
@@ -399,32 +399,17 @@
                 "command": "python ${workspaceFolder}/list_ports.py",
                 "description": "Select the COM port for upload"
             }
-        },
-        {
-            // dynamic file picker using extension https://marketplace.visualstudio.com/items?itemName=dfarley1.file-picker
-            "id": "FILESELECT",
-            "type": "command",
-            "command": "filePicker.pick",
-            "args": {
-                // "masks": "${env:ARDUINO_HARDWARE_BOOTLOADERS}/caterina/*.hex",
-                "masks": "C:/Users/gmanw/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.2/bootloaders/**/*.hex",
-                "display": {
-                    "detail": "${fileRelativePath}"
-                },
-                "output": "fileName"
-            }
-        },
-        {
-            "id": "pickerInput",
-            "type": "command",
-            "command": "filePicker.pick",
-            "args": {
-                "masks": "apps/**/*.json",
-                "display": {
-                    "detail": "fileName",
-                },
-                "output": "fileName"
-            }
-        }
+        }//,
+        // {
+        //     // dynamic file picker using extension https://marketplace.visualstudio.com/items?itemName=dfarley1.file-picker
+        //     "id": "FILESELECT",
+        //     "type": "command",
+        //     "command": "filePicker.pick",
+        //     "args": {
+        //         // "masks": "${env:ARDUINO_HARDWARE_BOOTLOADERS}/caterina/*.hex",
+        //         "masks": "C:/Users/gmanw/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.2/bootloaders/**/*.hex",
+        //         "output": "fileName"
+        //     }
+        // }
     ]
 }
