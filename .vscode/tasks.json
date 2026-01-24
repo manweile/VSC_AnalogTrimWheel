@@ -35,7 +35,7 @@
             "command": "avarice",
             "options": {
                 "shell": {
-                    "executable": "C:\\msys64\\usr\\bin\\bash.exe",
+                    "executable": "C:/msys64/usr/bin/bash.exe",
                     "args": [
                         "--login",
                         "-c",
@@ -237,7 +237,7 @@
             },
             "problemMatcher": []
         },
-        // arduino-cli can not compile & upload elf file single command line
+        // arduino-cli can not compile & upload elf file in single command line
         {
             "label": "Arduino-CLI Debug Compile & COM Port Upload",
             "dependsOrder": "sequence",
@@ -248,7 +248,7 @@
             "problemMatcher": []
         },
         // all avrdude tasks require avrdude path in User and/or System PATH
-        // functionally equivalent to Arduino-CLI elf file COM port upload, but for use when bootloader NOT on arduino board
+        // functionally equivalent to Arduino-CLI elf file COM port upload, but for use when bootloader NOT on arduino board and Atmel_ICE hooked up to ISP
         // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.elf:e
         {
             "label": "Avrdude Atmel-ICE Debug File Upload",
@@ -273,7 +273,7 @@
             },
             "problemMatcher": []
         },
-        // this is functionally equivalent to the Arduino-CLI COM port upload task, for when board doesn't have bootloader
+        // functionally equivalent to Arduino-CLI hex file COM port upload, but for use when bootloader NOT on arduino board and Atmel_ICE hooked up to ISP
         // avrdude -v -p atmega32u4 -c atmelice_isp -P usb -U flash:w:D:\MyArduino\Projects\VSC_AnalogTrimWheel\build\arduino.avr.micro\VSC_AnalogTrimWheel.ino.hex:i
         {
             "label": "Avrdude Atmel-ICE Production File Upload",
@@ -298,7 +298,7 @@
             },
             "problemMatcher": []
         },
-        // restore bootloader
+        // restores choosen bootloader and Atmel_ICE hooked up to ISP
         // avrdude -v -p atmega32u4 -c atmelice_isp -F -U flash:w:"C:\Users\gmanw\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders\caterina\Caterina-Micro.hex":i 
         {
             "label": "Avrdude Atmel-ICE Restore Bootloader",
@@ -336,8 +336,8 @@
                 "atmelice"        // 10 pin JTAG
             ]
         },
+        // list of FQBN for the boards I have and are installed in arduino-cli
         {
-            // list of FQBN for the boards I have and are installed in arduino-cli
             "type": "pickString",
             "id": "FQBN",
             "description": "Fully Qualified Board Name (FQBN) to use",
@@ -349,8 +349,8 @@
                 "SparkFun:avr:promicro",
             ]
         },
+        // list of build dirs for the FQBN of boards I have and are installed in arduino-cli
         {
-            // list of build dirs for the FQBN of boards I have and are installed in arduino-cli
             "type": "pickString",
             "id": "FQBNDIR",
             "description": "Fully Qualified Board Name (FQBN) build directory to use",
@@ -362,8 +362,8 @@
                 "SparkFun.avr.promicro",
             ]
         },
+        // dynamic com port list from google search: vs code tasks.json input com ports extension "Command Variable"
         {
-            // dynamic com port list from google search: vs code tasks.json input com ports extension "Command Variable"
             "id": "COMPort",
             "type": "command",
             "command": "shellCommand.execute",
@@ -373,6 +373,7 @@
                 "description": "Select the COM port for upload"
             }
         },
+        // open a file dialog in arduino hardware bootloaders directory
         {
             "id": "openDialog",
             "type": "command",
