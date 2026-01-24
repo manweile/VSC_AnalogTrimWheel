@@ -1,12 +1,22 @@
+#!/usr/bin/env python3
+'''
+@file list_ports.py
+@brief Lists active COM ports
+@details From google search: vs code tasks.json input com ports extension "Command Variable"
 
-# from google search: vs code tasks.json input com ports extension "Command Variable"
+@author Gerald Manweiler
+@copyright @showdate "%Y" GWN Software. All rights reserved.
+'''
+
+# standard modules
 import serial.tools.list_ports
 import sys
 
 
 def list_com_ports():
     '''
-    TODO Docstring for list_com_ports
+    @brief Lists active COM ports
+    @details Called by tasks.json input rule to supply list of com ports for selection
     '''
 
     ports = serial.tools.list_ports.comports()
@@ -14,10 +24,9 @@ def list_com_ports():
         print("No COM ports found")
         sys.exit(1)
     for port in ports:
-        # The extension will use each line as a selection option
+        # The task will use each line as a selection option
         if port.vid and port.vid:
             print(port.device)
-            # print(f"Description: {port.description}\tVID: 0x{port.vid:04x} PID: 0x{port.pid:04x}")
 
 
 if __name__ == "__main__":
