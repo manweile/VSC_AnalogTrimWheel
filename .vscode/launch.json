@@ -15,7 +15,6 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
-            // "miDebuggerPath": "C:\\AVR\\avr8-gnu-toolchain\\bin\\avr-gdb.exe",
             // "miDebuggerPath": "C:/Users/gmanw/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/avr-gdb.exe",
             "miDebuggerPath": "${env:ARDUINO_TOOLS_AVRGCC_BIN}/avr-gdb.exe",
             "miDebuggerServerAddress": "localhost:4242",
@@ -29,8 +28,8 @@
         // NB should also work on computer with Ubuntu OS
         // in Admin Powershell terminal: avr-gdb.exe -iex "target remote localhost:4242" VSC_AnalogTrimWheel.ino.elf
         // TODO pre-launch task start MYSYS AvaRICE Server
-        // TODO pre-launch configure WSL2 usbipd 
-        // TODO post-shutdown restore Windows usbipd
+        // TODO pre-launch configure WSL2 usbipd or at least check if done and reminder to do so manually
+        // TODO post-shutdown restore Windows usbipd or at least reminder to do so manually
         {
             "name": "WSL2 AVR Remote Debug",
             "type": "cppdbg",
