@@ -4,7 +4,7 @@ Based on https://makers-point.com/3d-prints/trim-wheel-pro/
 
 ## About
 This project was as much for learning how to break free of Microchip Studio as building a trim wheel controller.  
-Refer to /Documentation/Programming Environment/Environment.MD file for details.
+Refer to [Environment README](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Programming%20Environment/README.MD) file for details.
 
 ## Open Source Tools
 - VS Code
