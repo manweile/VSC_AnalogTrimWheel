@@ -99,11 +99,12 @@ I found the important sections of the yaml file were:
 ## AVRDUDESS
 [AVRDUDESS](https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/) is a gui wrapper for avrdude.  
 
-Optional, but recommended, it is quite useful when you have something kinda one off that you don't have a VS Code task configured for.  
+Optional, but recommended, it is quite useful when you have something kinda one off thing that you don't have a VS Code task configured for.  
 - restoring boot loaders
 - setting fuses  
+- general mcu problem solving (ie unbricking!)
 
-You just have to be aware that in AVRDUDESS, a 1 for fuse actually means unset, and a 0 means set!  
+For fuses, you just have to be aware that in AVRDUDESS, a 1 for fuse actually means unset, and a 0 means set!  
 In this aspect Microchip Studio's device programming dialog is actually more intuitive ... if you don't mind the baggage that comes with.  
 
 AVRDUDESS is Windows centric, but you can get it onto Ubuntu - refer to the [AVRDUDESS readme](https://github.com/avrdudes/avrdude/blob/main/README.md). 
@@ -116,7 +117,9 @@ Far and away the devil I know and comprehend. Sure the documentation could be be
 ### Extensions
 - [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)  
       Required, need this for Intellisense and debugging.
-
+- [Command Variable](https://marketplace.visualstudio.com/items?itemName=rioj7.command-variable)  
+      Optional, but highly recommended for command and/or variable substitution in tasks and launch json files.  
+      Allows you you really leverage external functionality.  
 - [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)  
       Optional if you want to build Linux applications that run on WSL without the hassle of dual booting or a full virtual machine.  
       Required to use Ubuntu AVaRICE with Atmel-ICE, but comes with usb connectivity issue to the Atmel-ICE. More on that later.  
@@ -143,7 +146,7 @@ Be aware that the Arduino-CLI can use custom variables too.
 Eg. ARDUINO_DIRECTORIES_USER, which is D:\MyArduino\Projects on my computer.  
 Make sure you are not conflicting, refer to https://docs.arduino.cc/arduino-cli/configuration/#configuration-keys to check!
 
-- ARDUINO_HARDWARE_BOOTLOADERS:     C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders\\**\\
+- ARDUINO_HARDWARE_BOOTLOADERS:     C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders
 - ARDUINO_HARDWARE_CORES:           C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\cores
 - ARDUINO_HARDWARE_LIBRARIES:       C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\libraries
 - ARDUINO_HARDWARE_VARIANTS:        C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\variants
@@ -194,11 +197,13 @@ GetGNUWin32 just didn't work. Ended up uninstalling it.
 MYSYS actually worked!  
 
 ## MYSYS2
-[MYSYS2](https://www.msys2.org/) brings powerful, Linux-style development tools and package management to Windows users, simplifying the process of creating native applications.  
+[MYSYS2](https://www.msys2.org/) brings powerful, Linux-style development tools and package management to Windows users.  
+MYSYS2 simplifies the process of creating native applications.  
 Installation is straightforward, use is very easy.  
 
 ### AVaRICE on MYSYS2
-MYSYS2 worked when I dug into the github workflow logs.  
+AVaRICE on MYSYS2 worked when I dug into the github workflow logs.  
+Beautiful template on how to compile and use AVaRICE.  
 Upshot is libhidapi is replaced, but you have to compile 3 different libraries before you compile AVaRICE.  
 
 You will have to run AVaRICE in a MYSYS2 MYSYS shell, but it works quite well, command line and in tasks/launch json files.  
@@ -212,20 +217,23 @@ Installation is straightforward, configuration can take little time, but is wort
 WSL2 offers a full Linux environment directly on Windows using a light weight virtual machine.  
 
 ### AVaRICE on WSL2
-This works, downside is still had to jump through some hoops to run on Windows.    
-Namely, had to do some fancy dancing with usbipd-win to get communication with the Atmel-ICE.  
+AVaRICE on WSL2 Ubuntu works, downside is still had to jump through some hoops to run on Windows.   
+The installation of AVaRICE itself is quite painless, but have to do some fancy dancing with usbipd-win to get communication with the Atmel-ICE.    
+
 This setup is somewhat kludgey, have to revert the usbipd configuration to restore normal Windows operation with Atmel-ICE, arduino-cli & avrdude.  
 Needs further investigation to see if I can do the usbipd configuring in VS code launch and tasks operations.  
 
 Follow the [WSL Avarice installation.txt](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Programming%20Environment/WSL%20Avarice%20installation.txt) file.  
 Follow the [JTAG_ICE setup and use from WSL.txt](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Programming%20Environment/JTAG_ICE%20setup%20and%20use%20from%20WSL.txt) file to run AVaRICE on WSL2.  
 
+Bottom line, it works, and it is a Ubuntu solution if that's your bent.  
+
 # Other Tools
 ## IDES
 ### Microchip Studio
 Frankly, unless you really need to go deep into the bare metal, registers and assembly code, you don't need it, and it's only for Microchip mcu's anyways.  
 Microchip is no longer updating it, and they are pushing you hard to switch to MPLAB. No thank you.  
-I will grant the device programming dialog GUI is easier to use with Atmel-Ice than avrdude cli and about equal with avrdudess GUI though. 
+I will grant the device programming dialog GUI is easier to use with Atmel-ICE than avrdude command line and about equal with AVRDUDESS GUI though. 
 
 #### Visual Micro
 [Visual Micro](https://www.visualmicro.com/) is a paid extension for MicroChip Studio/Visual Studio.  
@@ -235,8 +243,8 @@ It's one or the other, and furthermore, you can only swap once per month!
 
 ### Visual Studio
 VS Code's big brother might be an option worth looking into.  
-The availability of extensions will probably be the deciding factor.  
-VSCode extensions are not Visual Studio compatible. Sure would be nice if they are.  
+VSCode extensions are not Visual Studio compatible. Sure would be nice if they were.  
+Personally, I'm not fond of the default layout of VS 2026 - I actually prefer older versions like 2017/2019.
 BTW, Microchip Studio is a port of Visual Studio. Not sure how Microchip pulled that off.  
 
 ### Eclipse
