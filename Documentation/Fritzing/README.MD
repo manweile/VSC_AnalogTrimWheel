@@ -32,5 +32,5 @@ For JTAG, use the regular edge pins.
 My Atmel-ICE flat cable ISP developed a broken wire somewhere, which rendered the ISP connection unusable.  
 Fortunately, after reviewing the Atmel-ICE documentation, I realized a SWD header can supply signal for both JTAG and ISP.  
 
-![Promicro SWD Debug/Program](romicro_swd_to_jtag_and_isp_mapping_bb.png)  
+![Promicro SWD Debug/Program](promicro_swd_to_jtag_and_isp_mapping_bb.png)  
 
