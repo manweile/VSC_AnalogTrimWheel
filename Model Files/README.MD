@@ -49,6 +49,19 @@ For PETG, required inner & outer brim.
 PETG also had plate adhesion issues - Creality Print gave "please apply glue before print" warning.  
 I didn't and did have the print job become unstuck several times until I increased bed temperature to max.  
 
+### Clamp
+I got the clamp from Creality Cloud, but I'm sure you can find something suitable elsewhere.  
+
+Printed in both PETG & PLA, and in black and white.  
+Totally your choice of filament and colour.  
+
+2 different size options  
+- 2.75 inch vise
+- 3 inch vise
+
+Make sure to print the vise WITHOUT supports!  
+Screw hole will be plugged up if you do, and good chance will not be usable.  
+
 ## Overall Results
 PLA was better than PETG.  
 - No filaments in nut pockets
