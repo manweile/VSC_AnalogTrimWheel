@@ -16,7 +16,7 @@ You can attach both the 10 pin header and 6 pin header.
 ## Micro
 The micro does have a dedicated ISP header, you can use it or the regular edge pins.  
 For JTAG, use the regular edge pins. 
-
+![Micro JTAG ISP](micro_program_debug_bb.png)
 ![Micro JTAG ISP](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Fritzing/micro_program_debug_bb.pdf)  
 
 If you put anything in the regular edge pins next to the ISP header, you can't use the Atmel-ICE flat cable ISP connector.  
