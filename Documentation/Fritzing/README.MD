@@ -17,7 +17,6 @@ You can attach both the 10 pin header and 6 pin header.
 The micro does have a dedicated ISP header, you can use it or the regular edge pins.  
 For JTAG, use the regular edge pins. 
 ![Micro JTAG ISP](micro_program_debug_bb.png)
-![Micro JTAG ISP](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Fritzing/micro_program_debug_bb.pdf)  
 
 If you put anything in the regular edge pins next to the ISP header, you can't use the Atmel-ICE flat cable ISP connector.  
 It's got a keyway that protrudes, and will prevent you from getting proper electrical connection.  
@@ -27,11 +26,11 @@ Hence the ISP breadboard adapter.
 The promicro does not have a dedicated ISP header, use the regular edge pins.  
 For JTAG, use the regular edge pins.  
 
-[Promicro JTAG ISP](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Fritzing/promicro_program_debug_bb.pdf)
+![Promicro JTAG ISP](promicro_program_debug_bb.png)
 
 ### SWD for JTAG and ISP
 My Atmel-ICE flat cable ISP developed a broken wire somewhere, which rendered the ISP connection unusable.  
 Fortunately, after reviewing the Atmel-ICE documentation, I realized a SWD header can supply signal for both JTAG and ISP.  
 
-[Promicro SWD Debug/Program](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Fritzing/promicro_swd_to_jtag_and_isp_mapping_bb.pdf)  
+![Promicro SWD Debug/Program](romicro_swd_to_jtag_and_isp_mapping_bb.png)  
 
