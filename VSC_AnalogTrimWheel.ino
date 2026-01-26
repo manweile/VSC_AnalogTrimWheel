@@ -56,6 +56,7 @@ constexpr float SNAP_MULTIPLIER = 0.125;
 */
 
 // sensor output pin used by Arduino board
+// using A10 because want A0 - A3 available for debugging
 constexpr int ANALOG_PIN = A10;
 
 // one full rotation of sensor axle is 2^10, as Arduino's can only handle 10 bit ADC
