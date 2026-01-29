@@ -31,9 +31,8 @@ The designer used a Prusa MK3S at 0.2mm layer height.
 
 ### Wheel
 I printed the wheel in PLA only because I had that in white.  
-Printing in white allowed me to paint on the wheel.  
-A further modification could be use the embossing feature in Creality Print.  
-Oriented on non-shaft face.  
+Printing in white allowed me to write (with marker) on the wheel.  
+A further modification could be use the embossing feature in Creality Print, oriented on non-shaft face.  
 The flat keyed shaft hole did a very small ridge in it (where the wheel transitions to axle) which I had to remove.  
 
 ### Tensioner
