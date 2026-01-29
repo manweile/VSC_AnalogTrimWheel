@@ -38,7 +38,7 @@ You can [manually update the toolchain](https://github.com/arduino/toolchain-avr
 You WILL have to compile for your preferred OS, and that's an exercise I will leave to you.  
 Look at the Readme.md file in your download for details.  
 
-Of course you will also have to install the new compile is the correct location for your OS.  
+Of course you will also have to install the new compile in the correct location for your OS.  
 
 - On Windows: C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools
 - On Linux (Ubuntu): /HOME/USERNAME/.arduino15/packages/arduino/tools/
