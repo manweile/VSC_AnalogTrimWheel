@@ -39,7 +39,7 @@ You can optionally add promicro.build.usb_manufacturer.
     10. Ensure your pro micro is plugged into USB on computer
     11. Open Arduino IDE
     12. Find & select the new custom board name Tools > Board Manager > Arduino AVR Boards
-    13. Upload a sketch (preferable the analog trim wheel sketch!)
+    13. Upload a sketch (preferably the analog trim wheel sketch!)
     14. Close Arduino IDE
 
 ## Resulting Arduino Pro Micro Entry in Boards.txt
