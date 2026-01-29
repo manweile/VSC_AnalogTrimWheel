@@ -118,7 +118,7 @@ ResponsiveAnalogRead sensorReader(ANALOG_PIN, false);
 int currentSensor() {
   int currentSensor;
 
-  // updates the value by performing an analogRead() and calculating a responsive value based off it
+  // need to update with raw value from sensor before getting a responsive value based off it
   sensorReader.update();
   currentSensor = sensorReader.getValue();
 
