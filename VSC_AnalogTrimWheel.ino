@@ -172,7 +172,10 @@ int enforceJoystickRange(int joystickInput) {
   return enforcedJoystick;
 }
 
-
+/**
+ * @brief Initialize environment for program
+ * @details Runs exactly once at beginning of program lifecycle
+ */
 void setup() {
   // enables print output for dev/debugging purposes
   if (DEBUG) {
@@ -217,7 +220,10 @@ void setup() {
   Joystick.setRyAxis(static_cast<long>(prevJoystick));
 }
 
-
+/**
+ * @brief Core engine of program
+ * @details Executes indefinitely, providing active control
+ */
 void loop() {
   long axisValue;
   int joystickMove;
