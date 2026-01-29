@@ -154,7 +154,7 @@ Make sure you are not conflicting, refer to https://docs.arduino.cc/arduino-cli/
 - ARDUINO_TOOLS:                    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools
 - ARDUINO_TOOLS_AVRGCC_BIN:         C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\bin
 
-Now I can use thees system variables in the c_cpp_properties.json, tasks.json or launch.json and NOT have to put in a long ass OS specific path.  
+Now I can use these system variables in the c_cpp_properties.json, tasks.json or launch.json and NOT have to put in a long ass OS specific path.  
 You still have to maintain the path no matter what, but now it's only in 1 place.  
 
 #### PATH
@@ -179,7 +179,7 @@ I also found google AI searches helpful (so long as you watch out for "hallucina
 
 ## AVaRICE
 AVaRICE was the winner (no shit sherlock, literally made for AVR mcu's and Atmel-ICE!) over [OpenOCD](https://openocd.org/) and [pyOCD](https://pyocd.io/). 
-I never tried [Bloom](https://bloom.oscillate.io/) - found out about after I got AVaRICe working, and it's Linux only.  
+I never tried [Bloom](https://bloom.oscillate.io/) - found out about it after I got AVaRICe working, and it's Linux only.  
 
 The major issue with AVaRICE was operating system flavour.  
 With Ubuntu (WSL2 terminal or native install), the usual sudo apt update && sudo apt upgrade -y followed by sudo apt install avarice works fine.  
