@@ -110,9 +110,18 @@ In this aspect Microchip Studio's device programming dialog is actually more int
 AVRDUDESS is Windows centric, but you can get it onto Ubuntu - refer to the [AVRDUDESS readme](https://github.com/avrdudes/avrdude/blob/main/README.md). 
 
 ## VSCODE
-Why? Because it's hella easier to use than Microchip Studio, it's better than Arduino IDE, it's very well supported, and it's free.  
-VS Code is Windows and/or Ubuntu (either free-standing or via WSL2), far more extensions available (and almost all are free), and I have used it for 10 years now.  
-Far and away the devil I know and comprehend. Sure the documentation could be better, but hey, isn't all software like that?
+Why?  
+- Because it's hella easier to use than Microchip Studio
+- It's better than Arduino IDE
+- It's multi-OS 
+  - Windows 
+  - Ubuntu (either free-standing or via WSL2)
+- I have 10 years of experience with it
+- Fantastic amount of extensions
+- And it's free!  
+
+Far and away the devil I know and comprehend.  
+Sure the documentation could be better, but hey, isn't all software like that?
 
 ### Extensions
 - [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)  
@@ -178,11 +187,11 @@ Refer to [Launch Configurations](https://code.visualstudio.com/docs/debugtest/de
 I also found google AI searches helpful (so long as you watch out for "hallucinations").  
 
 ## AVaRICE
-AVaRICE was the winner (no shit sherlock, literally made for AVR mcu's and Atmel-ICE!) over [OpenOCD](https://openocd.org/) and [pyOCD](https://pyocd.io/). 
+AVaRICE was the winner (no shit sherlock, literally made for AVR mcu's and Atmel-ICE!) over [OpenOCD](https://openocd.org/) and [pyOCD](https://pyocd.io/).  
 I never tried [Bloom](https://bloom.oscillate.io/) - found out about it after I got AVaRICe working, and it's Linux only.  
 
 The major issue with AVaRICE was operating system flavour.  
-With Ubuntu (WSL2 terminal or native install), the usual sudo apt update && sudo apt upgrade -y followed by sudo apt install avarice works fine.  
+With Ubuntu, the usual sudo apt update && sudo apt upgrade -y followed by sudo apt install avarice works fine.  
 The problem after that was Atmel-ICE is very much a Windows tool - interfacing across WSL2 to use the Atmel-ICE is kludgy.  
 More on that in [AVaRICE on WSL2](#avarice-on-wsl2).
 
@@ -218,9 +227,12 @@ WSL2 offers a full Linux environment directly on Windows using a light weight vi
 
 ### AVaRICE on WSL2
 AVaRICE on WSL2 Ubuntu works, downside is still had to jump through some hoops to run on Windows.   
-The installation of AVaRICE itself is quite painless, but have to do some fancy dancing with usbipd-win to get communication with the Atmel-ICE.    
+- The installation of AVaRICE is quite painless
+  - but have to do some fancy dancing with usbipd-win to get communication with the Atmel-ICE.    
 
-This setup is somewhat kludgey, have to revert the usbipd configuration to restore normal Windows operation with Atmel-ICE, arduino-cli & avrdude.  
+This setup is somewhat kludgey
+- have to revert the usbipd configuration to restore normal Windows operation with Atmel-ICE, arduino-cli & avrdude.  
+
 Needs further investigation to see if I can do the usbipd configuring in VS code launch and tasks operations.  
 
 Follow the [WSL Avarice installation.txt](https://github.com/manweile/VSC_AnalogTrimWheel/blob/master/Documentation/Programming%20Environment/WSL%20Avarice%20installation.txt) file.  
@@ -231,9 +243,10 @@ Bottom line, it works, and it is a Ubuntu solution if that's your bent.
 # Other Tools
 ## IDES
 ### Microchip Studio
-Frankly, unless you really need to go deep into the bare metal, registers and assembly code, you don't need it, and it's only for Microchip mcu's anyways.  
-Microchip is no longer updating it, and they are pushing you hard to switch to MPLAB. No thank you.  
-I will grant the device programming dialog GUI is easier to use with Atmel-ICE than avrdude command line and about equal with AVRDUDESS GUI though. 
+Microchip is no longer updating it, and promoting switching to MPLAB. No thank you.  
+It's only for Microchip mcu's anyways, and really is overkill for almost all development tasks.  
+What it is good for is going deep into the bare metal, registers, ports, and assembly code.  
+I will grant the device programming dialog GUI is easier to use with Atmel-ICE than avrdude, and about equal with AVRDUDESS GUI.
 
 #### Visual Micro
 [Visual Micro](https://www.visualmicro.com/) is a paid extension for MicroChip Studio/Visual Studio.  
@@ -244,7 +257,7 @@ It's one or the other, and furthermore, you can only swap once per month!
 ### Visual Studio
 VS Code's big brother might be an option worth looking into.  
 VSCode extensions are not Visual Studio compatible. Sure would be nice if they were.  
-Personally, I'm not fond of the default layout of VS 2026 - I actually prefer older versions like 2017/2019.
+Personally, I'm not fond of the default layout of VS 2026 - I actually prefer older versions like 2017/2019.  
 BTW, Microchip Studio is a port of Visual Studio. Not sure how Microchip pulled that off.  
 
 ### Eclipse
@@ -261,12 +274,15 @@ Uninstalled, but going to keep an eye on it in case it gets usable.
 
 ### OpenOCD
 [OpenOCD](https://openocd.org/) was far more promising, but still only a partial success.  
-Supposedly, Microchip Studio uses OpenOCD "under the hood", but I couldn't get native OpenOCD to work with my Arduino Micro & Pro Micro (atmega32u4).  
-Documentation is conflicting on OpenOCD working with AVR mcu's, it really appears to be slanted to SAM/ARM mcu's, which I don't have any of (yet).  
+Supposedly, Microchip Studio uses OpenOCD "under the hood".  
+I couldn't get native OpenOCD to work with my Arduino Micro & Pro Micro (atmega32u4).  
+
+Documentation is conflicting on OpenOCD working with AVR mcu's.  
+It really appears to be slanted to SAM/ARM mcu's, which I don't have any of (yet).  
 Keeping it around for the potential to work with ESP32 mcu's, which I do have.  
 
 ### Bloom
-I never tried [Bloom](https://bloom.oscillate.io/), found it after I had AVaRICE working. At first glance, it looks good.  
+I never tried [Bloom](https://bloom.oscillate.io/), found it after I had AVaRICE working.  At first glance, it looks good.  
 I like the Insight GUI, which is something that could rival Microchip Studio for serious bare metal work.  
 The caveat with Bloom is that it is Linux only, and I already have that with AVaRICE.  
 Going to keep an eye on it though for a Windows port.
