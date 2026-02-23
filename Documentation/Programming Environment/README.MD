@@ -99,7 +99,7 @@ I found the important sections of the yaml file were:
         C:\Users\USERNAME\AppData\Local\Arduino15\staging
   - user  
         the equivalent of the Arduino IDE's "sketchbook" directory.  
-        You can copy from Arduino IDE preferences and past it into yaml file.
+        You can copy from Arduino IDE preferences and paste it into yaml file.
 
 ## AVRDUDESS
 [AVRDUDESS](https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/) is a gui wrapper for avrdude.  
