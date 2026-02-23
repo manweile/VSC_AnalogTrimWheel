@@ -84,17 +84,20 @@ I found the important sections of the yaml file were:
 - board manager
   - additional urls
         This where every board you want to work with needs to be.  
-        The listing is also exactly what you put into the Arduino IDE preferences Additional boards manager URLS. Literally copy from and paste into yaml file.
+        The listing is also exactly what you put into the Arduino IDE preferences Additional boards manager URLS.  
+        Literally copy from and paste into yaml file.
 - directories
   - builtin
     - libraries
-        The path to your builtin Arduino Libraries. C:\Users\USERNAME\AppData\Local\Arduino15\libraries
+        The path to your builtin Arduino Libraries.  
+        C:\Users\USERNAME\AppData\Local\Arduino15\libraries
   - data
         the path to your Arduino directory used to store Boards/Library Manager index files and Boards Manager platform installations. C:\Users\USERNAME\AppData\Local\Arduino15
   - downloads
         directory used to stage downloaded archives during Boards/Library Manager installations. C:\Users\USERNAME\AppData\Local\Arduino15\staging
   - user
-        the equivalent of the Arduino IDE's "sketchbook" directory. You can copy from Arduino IDE preferences and past it into yaml file.
+        the equivalent of the Arduino IDE's "sketchbook" directory.  
+        You can copy from Arduino IDE preferences and past it into yaml file.
 
 ## AVRDUDESS
 [AVRDUDESS](https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/) is a gui wrapper for avrdude.  
@@ -155,13 +158,20 @@ Be aware that the Arduino-CLI can use custom variables too.
 Eg. ARDUINO_DIRECTORIES_USER, which is D:\MyArduino\Projects on my computer.  
 Make sure you are not conflicting, refer to https://docs.arduino.cc/arduino-cli/configuration/#configuration-keys to check!
 
-- ARDUINO_HARDWARE_BOOTLOADERS:     C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders
-- ARDUINO_HARDWARE_CORES:           C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\cores
-- ARDUINO_HARDWARE_LIBRARIES:       C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\libraries
-- ARDUINO_HARDWARE_VARIANTS:        C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\variants
-- ARDUINO_LIBRARIES:                D:\MyArduino\Projects\Libraries
-- ARDUINO_TOOLS:                    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools
-- ARDUINO_TOOLS_AVRGCC_BIN:         C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\bin
+- ARDUINO_HARDWARE_BOOTLOADERS:  
+    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\bootloaders
+- ARDUINO_HARDWARE_CORES:  
+    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\cores
+- ARDUINO_HARDWARE_LIBRARIES:  
+    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\libraries
+- ARDUINO_HARDWARE_VARIANTS:  
+    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.2\variants
+- ARDUINO_LIBRARIES: 
+    D:\MyArduino\Projects\Libraries
+- ARDUINO_TOOLS:  
+    C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools
+- ARDUINO_TOOLS_AVRGCC_BIN:  
+  C:\Users\USERNAME\AppData\Local\Arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\bin
 
 Now I can use these system variables in the c_cpp_properties.json, tasks.json or launch.json and NOT have to put in a long ass OS specific path.  
 You still have to maintain the path no matter what, but now it's only in 1 place.  
