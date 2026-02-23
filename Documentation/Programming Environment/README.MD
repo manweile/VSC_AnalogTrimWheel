@@ -80,7 +80,7 @@ What's more, Arduino replaced make with arduino-cli compile functionality, it's 
 The yaml configuration file is probably the most important step in the arduino-cli install process.  
 It's also something that could use better [documentation!](https://docs.arduino.cc/arduino-cli/configuration/)  
 
-I found the important sections of the yaml file were:
+I found the important sections of the yaml file were:  
 - board manager
   - additional urls
         This where every board you want to work with needs to be.  
@@ -92,9 +92,11 @@ I found the important sections of the yaml file were:
         The path to your builtin Arduino Libraries.  
         C:\Users\USERNAME\AppData\Local\Arduino15\libraries
   - data  
-        the path to your Arduino directory used to store Boards/Library Manager index files and Boards Manager platform installations. C:\Users\USERNAME\AppData\Local\Arduino15
+        the path to your Arduino directory used to store Boards/Library Manager index files and Boards Manager platform installations.  
+        C:\Users\USERNAME\AppData\Local\Arduino15
   - downloads  
-        directory used to stage downloaded archives during Boards/Library Manager installations.  C:\Users\USERNAME\AppData\Local\Arduino15\staging
+        directory used to stage downloaded archives during Boards/Library Manager installations.  
+        C:\Users\USERNAME\AppData\Local\Arduino15\staging
   - user
         the equivalent of the Arduino IDE's "sketchbook" directory.  
         You can copy from Arduino IDE preferences and past it into yaml file.
