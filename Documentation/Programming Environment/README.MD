@@ -94,7 +94,7 @@ I found the important sections of the yaml file were:
   - data
         the path to your Arduino directory used to store Boards/Library Manager index files and Boards Manager platform installations. C:\Users\USERNAME\AppData\Local\Arduino15
   - downloads
-        directory used to stage downloaded archives during Boards/Library Manager installations. C:\Users\USERNAME\AppData\Local\Arduino15\staging
+        directory used to stage downloaded archives during Boards/Library Manager installations.  C:\Users\USERNAME\AppData\Local\Arduino15\staging
   - user
         the equivalent of the Arduino IDE's "sketchbook" directory.  
         You can copy from Arduino IDE preferences and past it into yaml file.
