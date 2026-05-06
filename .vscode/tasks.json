@@ -30,7 +30,7 @@
         // from google search AI: VS Code tasks.json for MSYS shell running avarice fro avarice installed/usr/bin directory
         // in MYSYS2 MYS terminal at C:\msys64\home\Gerald\avarice\avarice_installed\usr\bin : ./avarice --edbg --jtag usb :4242
         // fuses MUST be set for debugging
-            {
+        {
             "label": "MYSYS Bash AVaRICE Server",
             "type": "shell",
             "command": "avarice",
